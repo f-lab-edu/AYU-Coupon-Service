@@ -1,0 +1,22 @@
+HELP.md
+lib/*
+
+### Gradle ###
+.gradle
+**/build/
+!src/**/build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### macOs ###
+/.DS_Store
+
+
+src/main/resources/application.properties
