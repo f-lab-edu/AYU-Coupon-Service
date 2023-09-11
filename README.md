@@ -20,9 +20,9 @@
 
 ## 📑WIKI
 
-#### [요구 사항](https://github.com/f-lab-edu/coupon-project/wiki/%EC%9A%94%EA%B5%AC-%EC%82%AC%ED%95%AD)
-#### [API 명세서](https://github.com/f-lab-edu/coupon-project/wiki/API-%EB%AA%85%EC%84%B8%EC%84%9C-(%EC%9E%84%EC%8B%9C))
-#### [기술적 이슈 및 고도화]()
-#### [아키텍처]()
+1. [요구 사항](https://github.com/f-lab-edu/coupon-project/wiki/%EC%9A%94%EA%B5%AC-%EC%82%AC%ED%95%AD)
+2. [API 명세서](https://github.com/f-lab-edu/coupon-project/wiki/API-%EB%AA%85%EC%84%B8%EC%84%9C-(%EC%9E%84%EC%8B%9C))
+3. [기술적 이슈 및 고도화]()
+4. [아키텍처]()
 
 본 프로젝트의 자세한 내용은 [Wiki](https://github.com/f-lab-edu/coupon-api/wiki)에서 확인할 수 있습니다.
