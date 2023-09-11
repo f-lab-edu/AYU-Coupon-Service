@@ -1,5 +1,6 @@
 HELP.md
 lib/*
+/bin
 
 ### Gradle ###
 .gradle
