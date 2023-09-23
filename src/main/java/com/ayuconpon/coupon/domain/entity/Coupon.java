@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -40,6 +42,16 @@ public class Coupon extends BaseEntity {
         this.issuePeriod = issuePeriod;
         this.minProductPrice = minProductPrice;
         this.usageHours = usageHours;
+    }
+
+    public UserCoupon issue(Long userId, LocalDateTime currentTime) {
+        issuePeriod.validate(currentTime);
+        quantity.decrease();
+
+        return new UserCoupon(
+                userId,
+                this,
+                currentTime);
     }
 
 }

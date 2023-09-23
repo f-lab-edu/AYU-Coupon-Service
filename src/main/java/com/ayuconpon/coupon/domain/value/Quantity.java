@@ -28,4 +28,9 @@ public class Quantity {
         return new Quantity(value);
     }
 
+    public void decrease() {
+        if (leftQuantity <= 0) throw new IllegalStateException("쿠폰의 재고가 없습니다.");
+        leftQuantity--;
+    }
+
 }

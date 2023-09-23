@@ -41,13 +41,13 @@ public class UserCoupon extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public UserCoupon(Long userId, Coupon coupon, LocalDateTime issuedAt, LocalDateTime expiredAt, LocalDateTime usedAt, Status status) {
+    public UserCoupon(Long userId, Coupon coupon, LocalDateTime currentTime) {
         this.userId = userId;
         this.coupon = coupon;
-        this.issuedAt = issuedAt;
-        this.expiredAt = expiredAt;
-        this.usedAt = usedAt;
-        this.status = status;
+        this.issuedAt = currentTime;
+        this.expiredAt = currentTime.plusHours(coupon.getUsageHours());
+        this.usedAt = null;
+        this.status = Status.UNUSED;
     }
 
 }
