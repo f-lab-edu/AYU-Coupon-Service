@@ -3,11 +3,9 @@ import com.ayuconpon.common.ApiResponse;
 import com.ayuconpon.coupon.controller.request.IssueCouponRequest;
 import com.ayuconpon.coupon.controller.response.IssueCouponResponse;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @RestController
 public class CouponController {
 
