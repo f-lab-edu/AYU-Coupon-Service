@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 public class IssuePeriod {
 
     @Column(name = "started_at")
-    LocalDateTime startedDate;
+    LocalDateTime startedAt;
     @Column(name = "finished_at")
-    LocalDateTime finishedDate;
+    LocalDateTime finishedAt;
 
-    protected IssuePeriod(LocalDateTime startedDate, LocalDateTime finishedDate) {
-        this.startedDate = startedDate;
-        this.finishedDate = finishedDate;
+    protected IssuePeriod(LocalDateTime startedAt, LocalDateTime finishedAt) {
+        this.startedAt = startedAt;
+        this.finishedAt = finishedAt;
     }
 
-    public static IssuePeriod of(LocalDateTime startedDate, LocalDateTime finishedDate) {
-        return new IssuePeriod(startedDate, finishedDate);
+    public static IssuePeriod of(LocalDateTime startedAt, LocalDateTime finishedAt) {
+        return new IssuePeriod(startedAt, finishedAt);
     }
 
 }

@@ -3,8 +3,6 @@ package com.ayuconpon.coupon.domain.value;
 import com.ayuconpon.common.Money;
 import com.ayuconpon.common.MoneyConverter;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -18,17 +16,17 @@ public class DiscountPolicy {
     @Column(name = "discount_rate")
     private Float discountRate;
     @Convert(converter = MoneyConverter.class)
-    @Column(name = "discount_value")
-    private Money discountValue;
+    @Column(name = "discount_price")
+    private Money discountPrice;
 
-    private DiscountPolicy(DiscountType discountType, Float discountRate, Money discountValue) {
+    private DiscountPolicy(DiscountType discountType, Float discountRate, Money discountPrice) {
         this.discountType = discountType;
         this.discountRate = discountRate;
-        this.discountValue = discountValue;
+        this.discountPrice = discountPrice;
     }
 
-    public static DiscountPolicy of(DiscountType discountType, Float discountRate, Money discountValue) {
-        return new DiscountPolicy(discountType, discountRate, discountValue);
+    public static DiscountPolicy of(DiscountType discountType, Float discountRate, Money discountPrice) {
+        return new DiscountPolicy(discountType, discountRate, discountPrice);
     }
 
 }
