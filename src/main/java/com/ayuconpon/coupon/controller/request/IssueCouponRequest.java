@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 public class IssueCouponRequest {
 
     @NotNull(message = "쿠폰 발급 요청 아이디가 비어있습니다.")
-    private Long couponStockId;
+    private Long couponId;
 
     public IssueCouponRequest(Long couponId) {
-        this.couponStockId = couponId;
+        this.couponId = couponId;
     }
 
 }
