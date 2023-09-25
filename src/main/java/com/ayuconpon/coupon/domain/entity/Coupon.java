@@ -44,14 +44,9 @@ public class Coupon extends BaseEntity {
         this.usageHours = usageHours;
     }
 
-    public UserCoupon issue(Long userId, LocalDateTime currentTime) {
+    public void issue(LocalDateTime currentTime) {
         issuePeriod.validate(currentTime);
         quantity.decrease();
-
-        return new UserCoupon(
-                userId,
-                this,
-                currentTime);
     }
 
 }

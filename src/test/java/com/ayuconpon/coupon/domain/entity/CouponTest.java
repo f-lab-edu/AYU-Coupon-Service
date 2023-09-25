@@ -22,14 +22,12 @@ class CouponTest {
         Quantity quantity = Quantity.of(100L);
         Coupon coupon = getDefaultFixDiscountCouponWithQuantity(quantity);
 
-        Long userId = 1L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when
-        UserCoupon issuedCoupon = coupon.issue(userId, currentTime);
+        coupon.issue(currentTime);
 
         // then
-        assertThat(issuedCoupon).isNotNull();
         assertThat(coupon.getQuantity().getLeftQuantity()).isEqualTo(99L);
     }
 
@@ -39,11 +37,10 @@ class CouponTest {
         // given
         Coupon coupon = getDefaultFixDiscountCoupon();
 
-        Long userId = 1L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 1);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(userId, currentTime))
+        assertThatThrownBy(() -> coupon.issue(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰 발급 기간이 아닙니다.");
     }
@@ -54,11 +51,10 @@ class CouponTest {
         // given
         Coupon coupon = getDefaultFixDiscountCoupon();
 
-        Long userId = 1L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 22, 23, 59, 59);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(userId, currentTime))
+        assertThatThrownBy(() -> coupon.issue(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰 발급 기간이 아닙니다.");
     }
@@ -70,11 +66,10 @@ class CouponTest {
         Quantity quantity = Quantity.of(0L);
         Coupon coupon = getDefaultFixDiscountCouponWithQuantity(quantity);
 
-        Long userId = 1L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(userId, currentTime))
+        assertThatThrownBy(() -> coupon.issue(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰의 재고가 없습니다.");
     }
