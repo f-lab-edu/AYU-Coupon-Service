@@ -38,7 +38,7 @@ class CouponControllerTest {
         // when then
         mockMvc.perform(
                         post("/api/coupons")
-                                .cookie(new Cookie("User-Id", String.valueOf(userId)))
+                                .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -82,7 +82,7 @@ class CouponControllerTest {
         // when then
         mockMvc.perform(
                         post("/api/coupons")
-                                .cookie(new Cookie("User-Id", String.valueOf(userId)))
+                                .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
