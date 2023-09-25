@@ -25,4 +25,10 @@ public class IssuePeriod {
         return new IssuePeriod(startedAt, finishedAt);
     }
 
+    public void validate(LocalDateTime currentTime) {
+        if (currentTime.isBefore(startedAt) || currentTime.isAfter(finishedAt)) {
+            throw new IllegalStateException("쿠폰 발급 기간이 아닙니다.");
+        }
+    }
+
 }
