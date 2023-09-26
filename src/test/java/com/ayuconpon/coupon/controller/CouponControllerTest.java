@@ -2,7 +2,6 @@ package com.ayuconpon.coupon.controller;
 
 import com.ayuconpon.coupon.controller.request.IssueCouponRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ class CouponControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("Required cookie 'User-Id' for method parameter type Long is not present"));
+                .andExpect(jsonPath("$.message").value("잘못된 사용자 아이디 입니다."));
     }
 
     @DisplayName("쿠폰 발급 요청할 때는, 쿠폰 규칙 아이디가 필요하다.")

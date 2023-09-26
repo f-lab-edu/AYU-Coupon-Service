@@ -14,8 +14,8 @@ public class CouponExceptionHandler {
         return ApiResponse.error(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
-    @ExceptionHandler(MissingRequestCookieException.class)
-    public ApiResponse<String> handle(MissingRequestCookieException e) {
+    @ExceptionHandler(IllegalStateException.class)
+    public ApiResponse<String> handle(IllegalStateException e) {
         return ApiResponse.error(e.getMessage());
     }
 
