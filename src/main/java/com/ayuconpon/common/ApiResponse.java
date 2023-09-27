@@ -1,5 +1,6 @@
 package com.ayuconpon.common;
 
+import com.ayuconpon.exception.BaseCustomException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -32,6 +33,10 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> error(String message) {
         return of(HttpStatus.BAD_REQUEST, message, null);
+    }
+
+    public static <T> ApiResponse<T> error(BaseCustomException e) {
+        return of(e.getStatus(), e.getMessage(), null);
     }
 
 }
