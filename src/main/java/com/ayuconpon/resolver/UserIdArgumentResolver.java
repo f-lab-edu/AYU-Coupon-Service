@@ -1,5 +1,7 @@
 package com.ayuconpon.resolver;
 
+import com.ayuconpon.exception.UnauthorizedException;
+import com.ayuconpon.exception.UserIdFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -21,10 +23,14 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         String userId = request.getHeader(USER_ID);
 
+        if (userId == null) {
+            throw new UnauthorizedException();
+        }
+
         try {
             return Long.parseLong(userId);
         } catch (NumberFormatException e) {
-            throw new IllegalStateException("잘못된 사용자 아이디 입니다.");
+            throw new UserIdFormatException();
         }
 
     }
