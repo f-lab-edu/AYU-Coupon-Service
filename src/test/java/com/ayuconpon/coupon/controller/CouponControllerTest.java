@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -64,9 +65,32 @@ class CouponControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("400"))
-                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("잘못된 사용자 아이디 입니다."));
+                .andExpect(jsonPath("$.code").value(HttpStatus.UNAUTHORIZED.value()))
+                .andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.name()))
+                .andExpect(jsonPath("$.message").value("인증되지 않은 사용자입니다."));
+    }
+
+    @DisplayName("쿠폰 발급 요청할 때, 요청 유저 아이디는 숫자다.")
+    @Test
+    public void issueCouponWithInvalidFormatUserId() throws Exception {
+        // given
+        Long couponRuleId = 1L;
+        String userId = "invalid";
+
+        IssueCouponRequest request = new IssueCouponRequest(couponRuleId);
+
+        // when then
+        mockMvc.perform(
+                        post("/api/coupons")
+                                .content(objectMapper.writeValueAsString(request))
+                                .header("User-Id", String.valueOf(userId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(HttpStatus.BAD_REQUEST.value()))
+                .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+                .andExpect(jsonPath("$.message").value("잘못된 형식의 사용자 아이디입니다."));
     }
 
     @DisplayName("쿠폰 발급 요청할 때는, 쿠폰 규칙 아이디가 필요하다.")
