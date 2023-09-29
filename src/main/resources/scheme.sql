@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `coupon`, `user_coupon`;
+DROP TABLE IF EXISTS `coupon`, `user_coupon`, `user`;
 
 -- -----------------------------------------------------
 -- Table `coupon`
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `coupon` (
     `name` VARCHAR(45) NULL,
     `discount_type` VARCHAR(45) NOT NULL,
     `discount_rate` INT NULL,
-    `discount_value` INT NULL,
+    `discount_price` INT NULL,
     `total_quantity` INT NOT NULL,
     `left_quantity` INT NOT NULL,
     `started_at` DATETIME NOT NULL,
@@ -42,3 +42,16 @@ CREATE TABLE IF NOT EXISTS `user_coupon` (
 
 ALTER TABLE user_coupon
     ADD CONSTRAINT user_coupon_id_and_user_id_unique UNIQUE(coupon_id, user_id);
+
+-- -----------------------------------------------------
+-- Table `user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `user` (
+    `user_id` BIGINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NULL,
+    `status` VARCHAR(50) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`user_id`))
+    ENGINE = InnoDB;
+
