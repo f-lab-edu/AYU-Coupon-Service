@@ -36,8 +36,8 @@ public class IssueCouponService {
     }
 
     private UserCoupon issueCoupon(IssueCouponCommand command) {
-        Coupon coupon = couponRepository.findById(command.couponId())
-                .orElseThrow(NotFoundCouponException::new);
+        Coupon coupon = couponRepository.findByIdWithPessimisticLock(command.couponId());
+        if (coupon == null) throw new NotFoundCouponException();
 
         LocalDateTime currentTime = LocalDateTime.now();
 
