@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CouponController {
 
-    @PostMapping("/api/coupons")
+    @PostMapping("/users/coupons")
     public ResponseEntity<IssueCouponResponse> issueCoupon(
             @UserId Long userId,
             @Valid @RequestBody IssueCouponRequest issueCouponRequest) {
