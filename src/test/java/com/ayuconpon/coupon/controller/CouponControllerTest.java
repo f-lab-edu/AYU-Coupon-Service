@@ -1,16 +1,19 @@
 package com.ayuconpon.coupon.controller;
 
 import com.ayuconpon.coupon.controller.request.IssueCouponRequest;
+import com.ayuconpon.coupon.service.IssueCouponCommand;
+import com.ayuconpon.coupon.service.IssueCouponService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -21,6 +24,9 @@ class CouponControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private IssueCouponService issueCouponService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -28,15 +34,18 @@ class CouponControllerTest {
     @Test
     public void issueCoupon() throws Exception {
         // given
-        Long couponRuleId = 1L;
+        Long couponId = 1L;
         Long userId = 1L;
         Long issuedCouponId = 1L;
 
-        IssueCouponRequest request = new IssueCouponRequest(couponRuleId);
+        IssueCouponRequest request = new IssueCouponRequest(couponId);
+        IssueCouponCommand command = new IssueCouponCommand(userId, couponId);
+
+        given(issueCouponService.issue(command)).willReturn(issuedCouponId);
 
         // when then
         mockMvc.perform(
-                        post("/api/coupons")
+                        post("/users/coupons")
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,9 +63,10 @@ class CouponControllerTest {
 
         IssueCouponRequest request = new IssueCouponRequest(couponRuleId);
 
+
         // when then
         mockMvc.perform(
-                        post("/api/coupons")
+                        post("/users/coupons")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -76,7 +86,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/api/coupons")
+                        post("/users/coupons")
                                 .content(objectMapper.writeValueAsString(request))
                                 .header("User-Id", String.valueOf(userId))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +107,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/api/coupons")
+                        post("/users/coupons")
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
