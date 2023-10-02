@@ -15,6 +15,11 @@ public class CouponExceptionHandler {
         return ApiResponse.error(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ApiResponse<String> handle(IllegalArgumentException e) {
+        return ApiResponse.error(e.getMessage());
+    }
+
     @ExceptionHandler(IllegalStateException.class)
     public ApiResponse<String> handle(IllegalStateException e) {
         return ApiResponse.error(e.getMessage());
