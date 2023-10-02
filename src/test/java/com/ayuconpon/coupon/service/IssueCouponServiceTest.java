@@ -1,23 +1,39 @@
 package com.ayuconpon.coupon.service;
 
+import com.ayuconpon.coupon.domain.CouponRepository;
+import com.ayuconpon.coupon.domain.UserCouponRepository;
+import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.exception.DuplicatedCouponException;
 import com.ayuconpon.exception.NotFoundCouponException;
 import com.ayuconpon.exception.RequireRegistrationException;
+import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest
 @Transactional
-class IssueCouponServiceTest {
+class IssueCouponServiceTest extends IssueCouponRepositorySupport {
 
     @Autowired
     private IssueCouponService issueCouponService;
-
+    @Autowired
+    private CouponRepository couponRepository;
+    @Autowired
+    private UserCouponRepository userCouponRepository;
+    
+    @AfterEach
+    public void afterEach() {
+        userCouponRepository.deleteAllInBatch();
+    }
 
     @DisplayName("쿠폰 요청을 할 수 있다.")
     @Test
@@ -67,6 +83,36 @@ class IssueCouponServiceTest {
         assertThatThrownBy(() -> issueCouponService.issue(command))
                 .isInstanceOf(NotFoundCouponException.class)
                 .hasMessage("발급 요청된 쿠폰이 존재하지 않습니다.");
+    }
+
+    @DisplayName("쿠폰을 발급하면, 쿠폰 재고가 감소한다.")
+    @Test
+    public void pessimisticLockIssueCouponTest () throws InterruptedException {
+        //given
+        Long couponId = 1L;
+        Long userNum = 5L;
+
+        int couponLeftQuantity = 5;
+        int numberOfThreads = 5;
+        ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
+        CountDownLatch latch = new CountDownLatch(couponLeftQuantity);
+
+        //when
+        for (int userId = 1; userId <= userNum; userId++) {
+            IssueCouponCommand command = new IssueCouponCommand((long) userId, couponId);
+            service.execute(() -> {
+                issueCouponService.issue(command);
+                latch.countDown();
+            });
+        }
+        latch.await();
+
+        // then
+        assertThat(userCouponRepository.count()).isEqualTo(couponLeftQuantity);
+
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(RuntimeException::new);
+        assertThat(coupon.getQuantity().getLeftQuantity()).isEqualTo(0);
     }
 
 }
