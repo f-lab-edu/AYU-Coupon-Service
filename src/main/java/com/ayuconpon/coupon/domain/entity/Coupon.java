@@ -44,7 +44,7 @@ public class Coupon extends BaseEntity {
         this.usageHours = usageHours;
     }
 
-    public void issue(LocalDateTime currentTime) {
+    public void decrease(LocalDateTime currentTime) {
         issuePeriod.validate(currentTime);
         quantity.decrease();
     }
