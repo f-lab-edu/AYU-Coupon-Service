@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = {CouponController.class})
 class CouponControllerTest {
@@ -44,9 +43,7 @@ class CouponControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("200"))
-                .andExpect(jsonPath("$.message").value("OK"))
-                .andExpect(jsonPath("$.data.issuedCouponId").value(String.valueOf(issuedCouponId)));
+                .andExpect(jsonPath("$.issuedCouponId").value(String.valueOf(issuedCouponId)));
     }
 
     @DisplayName("쿠폰 발급 요청할 때는, 유저 아이디가 필요하다.")
@@ -64,10 +61,8 @@ class CouponControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(HttpStatus.UNAUTHORIZED.value()))
-                .andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.name()))
-                .andExpect(jsonPath("$.message").value("인증되지 않은 사용자입니다."));
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("인증되지 않은 사용자입니다."));
     }
 
     @DisplayName("쿠폰 발급 요청할 때, 요청 유저 아이디는 숫자다.")
@@ -87,10 +82,8 @@ class CouponControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(HttpStatus.BAD_REQUEST.value()))
-                .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
-                .andExpect(jsonPath("$.message").value("잘못된 형식의 사용자 아이디입니다."));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("잘못된 형식의 사용자 아이디입니다."));
     }
 
     @DisplayName("쿠폰 발급 요청할 때는, 쿠폰 규칙 아이디가 필요하다.")
@@ -110,10 +103,8 @@ class CouponControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("400"))
-                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-                .andExpect(jsonPath("$.message").value("쿠폰 발급 요청 아이디가 비어있습니다."));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("쿠폰 발급 요청 아이디가 비어있습니다."));
     }
 
 }
