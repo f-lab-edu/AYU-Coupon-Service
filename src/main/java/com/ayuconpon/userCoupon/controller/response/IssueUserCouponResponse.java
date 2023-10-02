@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IssueUserCouponResponse {
 
-    public Long issuedUserCouponId;
+    private Long issuedUserCouponId;
 
     public IssueUserCouponResponse(Long issuedUserCouponId) {
         this.issuedUserCouponId = issuedUserCouponId;
