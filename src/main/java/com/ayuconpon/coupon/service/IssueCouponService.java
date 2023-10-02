@@ -26,22 +26,22 @@ public class IssueCouponService {
 
     public Long issue(IssueCouponCommand command) {
         validate(command);
-        UserCoupon issuedCoupon = issueCoupon(command);
-        return saveCoupon(issuedCoupon);
+        UserCoupon issuedUserCoupon = issueUserCoupon(command);
+        return saveCoupon(issuedUserCoupon);
     }
 
     private void validate(IssueCouponCommand command) {
+        validateRegisteredCoupon(command);
         validateRegisteredUser(command);
         validateDuplicatedCoupon(command);
     }
 
-    private UserCoupon issueCoupon(IssueCouponCommand command) {
+    private UserCoupon issueUserCoupon(IssueCouponCommand command) {
         Coupon coupon = couponRepository.findByIdWithPessimisticLock(command.couponId());
-        if (coupon == null) throw new NotFoundCouponException();
 
         LocalDateTime currentTime = LocalDateTime.now();
 
-        coupon.issue(currentTime);
+        coupon.decrease(currentTime);
         return new UserCoupon(command.userId(), coupon, currentTime);
     }
 
@@ -49,9 +49,14 @@ public class IssueCouponService {
         return userCouponRepository.save(issuedCoupon).getUserCouponId();
     }
 
+    private void validateRegisteredCoupon(IssueCouponCommand command) {
+        boolean isExist = couponRepository.existsById(command.couponId());
+        if (!isExist) throw new NotFoundCouponException();
+    }
+
     private void validateRegisteredUser(IssueCouponCommand command) {
-        userRepository.findById(command.userId())
-                .orElseThrow(RequireRegistrationException::new);
+        boolean isExist = userRepository.existsById(command.userId());
+        if (!isExist) throw new RequireRegistrationException();
     }
 
     private void validateDuplicatedCoupon(IssueCouponCommand command) {

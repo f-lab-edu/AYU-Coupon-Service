@@ -25,7 +25,7 @@ class CouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when
-        coupon.issue(currentTime);
+        coupon.decrease(currentTime);
 
         // then
         assertThat(coupon.getQuantity().getLeftQuantity()).isEqualTo(99L);
@@ -40,7 +40,7 @@ class CouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 1);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(currentTime))
+        assertThatThrownBy(() -> coupon.decrease(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰 발급 기간이 아닙니다.");
     }
@@ -54,7 +54,7 @@ class CouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 22, 23, 59, 59);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(currentTime))
+        assertThatThrownBy(() -> coupon.decrease(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰 발급 기간이 아닙니다.");
     }
@@ -69,7 +69,7 @@ class CouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when then
-        assertThatThrownBy(() -> coupon.issue(currentTime))
+        assertThatThrownBy(() -> coupon.decrease(currentTime))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("쿠폰의 재고가 없습니다.");
     }
