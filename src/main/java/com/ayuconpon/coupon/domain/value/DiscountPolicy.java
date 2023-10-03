@@ -14,18 +14,18 @@ public class DiscountPolicy {
     @Column(name = "discount_type")
     private DiscountType discountType;
     @Column(name = "discount_rate")
-    private Float discountRate;
+    private Double discountRate;
     @Convert(converter = MoneyConverter.class)
     @Column(name = "discount_price")
     private Money discountPrice;
 
-    private DiscountPolicy(DiscountType discountType, Float discountRate, Money discountPrice) {
+    private DiscountPolicy(DiscountType discountType, Double discountRate, Money discountPrice) {
         this.discountType = discountType;
         this.discountRate = discountRate;
         this.discountPrice = discountPrice;
     }
 
-    public static DiscountPolicy of(DiscountType discountType, Float discountRate, Money discountPrice) {
+    public static DiscountPolicy of(DiscountType discountType, Double discountRate, Money discountPrice) {
         return new DiscountPolicy(discountType, discountRate, discountPrice);
     }
 
