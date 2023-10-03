@@ -74,6 +74,46 @@ class CouponTest {
                 .hasMessage("쿠폰의 재고가 없습니다.");
     }
 
+    @DisplayName("정액 쿠폰 사용 요청을 할 수 있다.")
+    @Test
+    public void applyFixedPriceDiscountCoupon() {
+        //given
+        Money productPrice = Money.wons(10000L);
+        Coupon coupon = getDefaultFixDiscountCoupon();
+
+        //when
+        Money discountedProductPrice = coupon.apply(productPrice);
+
+        //then
+        assertThat(discountedProductPrice.getValue()).isEqualTo(Money.wons(9000L).getValue());
+     }
+
+    @DisplayName("정률 쿠폰 사용 요청을 할 수 있다.")
+    @Test
+    public void applyRatePriceDiscountCoupon() {
+        //given
+        Money productPrice = Money.wons(10000L);
+        Coupon coupon = getDefaultRateDiscountCoupon();
+
+        //when
+        Money discountedProductPrice = coupon.apply(productPrice);
+
+        //then
+        assertThat(discountedProductPrice.getValue()).isEqualTo(Money.wons(9000L).getValue());
+    }
+
+    @DisplayName("상품 가격이 쿠폰 적용 가능한 최소 상품 가격보다 낮으면, 쿠폰 적용할 수 없다.")
+    @Test
+    public void  applyCouponWithLowerProductPriceThanMinProductPrice() {
+        //given
+        Money productPrice = Money.wons(4999L);
+        Coupon coupon = getDefaultFixDiscountCoupon();
+
+        //when //then
+        assertThatThrownBy(() -> coupon.apply(productPrice))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("상품 금액이 쿠폰 적용 가능한 최소 금액보다 낮습니다.");
+     }
 
     private Coupon getDefaultFixDiscountCoupon() {
         String name = "기본 쿠폰";
@@ -81,6 +121,28 @@ class CouponTest {
                 DiscountType.FIX_DISCOUNT,
                 null,
                 Money.wons(1000L));
+        Quantity quantity = Quantity.of(100L);
+        IssuePeriod issuePeriod = IssuePeriod.of(
+                LocalDateTime.of(2023, 9, 23, 0, 0, 0),
+                LocalDateTime.of(2023, 9, 24, 0, 0, 0));
+        Money minProductPrice = Money.wons(5000L);
+        Long usageHours = 72L;
+
+        return new Coupon(
+                name,
+                discountPolicy,
+                quantity,
+                issuePeriod,
+                minProductPrice,
+                usageHours);
+    }
+
+    private Coupon getDefaultRateDiscountCoupon() {
+        String name = "기본 쿠폰";
+        DiscountPolicy discountPolicy = DiscountPolicy.of(
+                DiscountType.RATE_DISCOUNT,
+                0.1,
+                null);
         Quantity quantity = Quantity.of(100L);
         IssuePeriod issuePeriod = IssuePeriod.of(
                 LocalDateTime.of(2023, 9, 23, 0, 0, 0),

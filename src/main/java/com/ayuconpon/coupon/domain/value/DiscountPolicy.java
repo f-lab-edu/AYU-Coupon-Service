@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountPolicy {
@@ -27,6 +29,17 @@ public class DiscountPolicy {
 
     public static DiscountPolicy of(DiscountType discountType, Double discountRate, Money discountPrice) {
         return new DiscountPolicy(discountType, discountRate, discountPrice);
+    }
+
+    public Money calculateDiscountedProductPrice(Money productPrice) {
+        if (discountType.equals(DiscountType.FIX_DISCOUNT)) {
+            return productPrice.minus(discountPrice);
+        }
+        if (discountType.equals(DiscountType.RATE_DISCOUNT)) {
+            Money discountPrice = productPrice.multiply(BigDecimal.valueOf(discountRate));
+            return productPrice.minus(discountPrice);
+        }
+        throw new IllegalStateException("할인 정책이 존재하지 않습니다");
     }
 
 }

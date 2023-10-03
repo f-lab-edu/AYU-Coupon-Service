@@ -17,12 +17,24 @@ public class Money {
         return new Money(BigDecimal.valueOf(price));
     }
 
-    private boolean isNegative(BigDecimal amount) {
-        return amount.compareTo(BigDecimal.ZERO) < 0;
-    }
-
     public Long getValue() {
         return value.longValue();
+    }
+
+    public Money minus(Money money) {
+        return new Money(this.value.subtract(money.value));
+    }
+
+    public Money multiply(BigDecimal operand) {
+        return new Money(this.value.multiply(operand));
+    }
+
+    public boolean isGreaterThanOrEqualTo(Money money) {
+        return this.value.compareTo(money.value) >= 0;
+    }
+
+    private boolean isNegative(BigDecimal amount) {
+        return amount.compareTo(BigDecimal.ZERO) < 0;
     }
 
 }
