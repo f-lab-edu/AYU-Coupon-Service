@@ -1,6 +1,9 @@
 package com.ayuconpon.userCoupon.domain.entity;
 
 import com.ayuconpon.common.BaseEntity;
+import com.ayuconpon.common.Money;
+import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
+import com.ayuconpon.common.exception.ExpiredUserCouponException;
 import com.ayuconpon.userCoupon.domain.value.Status;
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import jakarta.persistence.*;
@@ -49,6 +52,22 @@ public class UserCoupon extends BaseEntity {
         this.expiredAt = currentTime.plusHours(coupon.getUsageHours());
         this.usedAt = null;
         this.status = Status.UNUSED;
+    }
+
+    public Money apply(Money productPrice, LocalDateTime currentTime) {
+        validate(currentTime);
+        status = Status.USED;
+        usedAt = currentTime;
+        return coupon.apply(productPrice);
+    }
+
+    private void validate(LocalDateTime currentTime) {
+        if (status.equals(Status.USED)) {
+            throw new AlreadyUsedUserCouponException();
+        }
+        if (expiredAt.isBefore(currentTime)) {
+            throw new ExpiredUserCouponException();
+        }
     }
 
 }
