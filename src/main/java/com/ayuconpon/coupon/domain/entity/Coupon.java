@@ -49,4 +49,11 @@ public class Coupon extends BaseEntity {
         quantity.decrease();
     }
 
+    public Money apply(Money productPrice) {
+        if (!productPrice.isGreaterThanOrEqualTo(minProductPrice)) {
+            throw new IllegalArgumentException("상품 금액이 쿠폰 적용 가능한 최소 금액보다 낮습니다.");
+        }
+        return discountPolicy.calculateDiscountedProductPrice(productPrice);
+    }
+
 }
