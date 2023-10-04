@@ -1,6 +1,5 @@
 package com.ayuconpon.common;
 
-import com.ayuconpon.common.Money;
 import jakarta.persistence.AttributeConverter;
 
 public class MoneyConverter implements AttributeConverter<Money, Long> {

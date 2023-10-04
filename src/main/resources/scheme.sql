@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `coupon` (
     `coupon_id` BIGINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(45) NULL,
     `discount_type` VARCHAR(45) NOT NULL,
-    `discount_rate` INT NULL,
+    `discount_rate` DECIMAL(3,2) NULL,
     `discount_price` INT NULL,
     `total_quantity` INT NOT NULL,
     `left_quantity` INT NOT NULL,
