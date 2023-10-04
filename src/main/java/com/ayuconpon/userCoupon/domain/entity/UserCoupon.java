@@ -54,7 +54,7 @@ public class UserCoupon extends BaseEntity {
         this.status = Status.UNUSED;
     }
 
-    public Money apply(Money productPrice, LocalDateTime currentTime) {
+    public Money use(Money productPrice, LocalDateTime currentTime) {
         validate(currentTime);
         status = Status.USED;
         usedAt = currentTime;

@@ -8,7 +8,6 @@ import com.ayuconpon.coupon.domain.value.DiscountPolicy;
 import com.ayuconpon.coupon.domain.value.DiscountType;
 import com.ayuconpon.coupon.domain.value.IssuePeriod;
 import com.ayuconpon.coupon.domain.value.Quantity;
-import com.ayuconpon.user.domain.entity.User;
 import com.ayuconpon.userCoupon.domain.entity.UserCoupon;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class UserCouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when
-        Money discountedProductPrice = userCoupon.apply(productPrice, currentTime);
+        Money discountedProductPrice = userCoupon.use(productPrice, currentTime);
 
         // then
         assertThat(discountedProductPrice.getValue()).isEqualTo(Money.wons(9000L).getValue());
@@ -43,10 +42,10 @@ class UserCouponTest {
         Money productPrice = Money.wons(10000L);
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
-        userCoupon.apply(productPrice, currentTime);
+        userCoupon.use(productPrice, currentTime);
 
         // when //then
-        assertThatThrownBy(() -> userCoupon.apply(productPrice, currentTime))
+        assertThatThrownBy(() -> userCoupon.use(productPrice, currentTime))
                 .isInstanceOf(AlreadyUsedUserCouponException.class)
                 .hasMessage("이미 사용한 쿠폰입니다.");
      }
@@ -60,7 +59,7 @@ class UserCouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 26, 12, 0, 1);
 
         // when //then
-        assertThatThrownBy(() -> userCoupon.apply(productPrice, currentTime))
+        assertThatThrownBy(() -> userCoupon.use(productPrice, currentTime))
                 .isInstanceOf(ExpiredUserCouponException.class)
                 .hasMessage("만료된 쿠폰입니다.");
     }
