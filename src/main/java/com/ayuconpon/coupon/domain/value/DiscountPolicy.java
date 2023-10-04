@@ -15,19 +15,21 @@ public class DiscountPolicy {
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_type")
     private DiscountType discountType;
-    @Column(name = "discount_rate")
-    private Double discountRate;
+
+    @Column(name = "discount_rate", precision = 3, scale = 2)
+    private BigDecimal discountRate;
+
     @Convert(converter = MoneyConverter.class)
     @Column(name = "discount_price")
     private Money discountPrice;
 
-    private DiscountPolicy(DiscountType discountType, Double discountRate, Money discountPrice) {
+    private DiscountPolicy(DiscountType discountType, BigDecimal discountRate, Money discountPrice) {
         this.discountType = discountType;
         this.discountRate = discountRate;
         this.discountPrice = discountPrice;
     }
 
-    public static DiscountPolicy of(DiscountType discountType, Double discountRate, Money discountPrice) {
+    public static DiscountPolicy of(DiscountType discountType, BigDecimal discountRate, Money discountPrice) {
         return new DiscountPolicy(discountType, discountRate, discountPrice);
     }
 
