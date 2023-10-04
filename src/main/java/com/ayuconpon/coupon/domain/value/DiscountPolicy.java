@@ -38,7 +38,7 @@ public class DiscountPolicy {
             return productPrice.minus(discountPrice);
         }
         if (discountType.equals(DiscountType.RATE_DISCOUNT)) {
-            Money discountPrice = productPrice.multiply(BigDecimal.valueOf(discountRate));
+            Money discountPrice = productPrice.multiply(discountRate);
             return productPrice.minus(discountPrice);
         }
         throw new IllegalStateException("할인 정책이 존재하지 않습니다");

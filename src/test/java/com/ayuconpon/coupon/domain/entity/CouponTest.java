@@ -8,6 +8,7 @@ import com.ayuconpon.coupon.domain.value.Quantity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -141,7 +142,7 @@ class CouponTest {
         String name = "기본 쿠폰";
         DiscountPolicy discountPolicy = DiscountPolicy.of(
                 DiscountType.RATE_DISCOUNT,
-                0.1,
+                new BigDecimal("0.1"),
                 null);
         Quantity quantity = Quantity.of(100L);
         IssuePeriod issuePeriod = IssuePeriod.of(
