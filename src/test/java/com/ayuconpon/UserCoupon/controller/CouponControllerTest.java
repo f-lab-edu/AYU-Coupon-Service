@@ -1,9 +1,12 @@
 package com.ayuconpon.usercoupon.controller;
 
-import com.ayuconpon.usercoupon.controller.request.ApplyUserCouponRequest;
+import com.ayuconpon.common.Money;
+import com.ayuconpon.usercoupon.controller.request.UseUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
 import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
 import com.ayuconpon.usercoupon.service.IssueUserCouponService;
+import com.ayuconpon.usercoupon.service.UseUserCouponCommand;
+import com.ayuconpon.usercoupon.service.UseUserCouponService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +30,9 @@ class CouponControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IssueUserCouponService issueCouponService;
+    private IssueUserCouponService issueUserCouponService;
+    @MockBean
+    private UseUserCouponService useUserCouponService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,7 +48,7 @@ class CouponControllerTest {
         IssueUserCouponRequest request = new IssueUserCouponRequest(couponId);
         IssueUserCouponCommand command = new IssueUserCouponCommand(userId, couponId);
 
-        given(issueCouponService.issue(command)).willReturn(issuedUserCouponId);
+        given(issueUserCouponService.issue(command)).willReturn(issuedUserCouponId);
 
         // when then
         mockMvc.perform(
@@ -121,14 +126,17 @@ class CouponControllerTest {
 
     @DisplayName("쿠폰 적용을 요청한다.")
     @Test
-    public void applyCoupon() throws Exception {
+    public void useCoupon() throws Exception {
         // given
         Long userId = 1L;
         Long userCouponId = 1L;
         Long productPrice = 10000L;
-        Long discountedProductPrice = 9000L;
+        Money discountedProductPrice = Money.wons(9000L);
 
-        ApplyUserCouponRequest request = new ApplyUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, Money.wons(productPrice));
+
+        given(useUserCouponService.use(command)).willReturn(discountedProductPrice);
 
         // when then
         mockMvc.perform(
@@ -139,18 +147,18 @@ class CouponControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.discountedProductPrice").value(String.valueOf(discountedProductPrice)));
+                .andExpect(jsonPath("$.discountedProductPrice").value(String.valueOf(discountedProductPrice.getValue())));
     }
 
     @DisplayName("쿠폰 적용을 요청할 때는, 발급된 쿠폰 아이디가 필요하다.")
     @Test
-    public void applyCouponWithoutCouponStockId() throws Exception {
+    public void useCouponWithoutCouponStockId() throws Exception {
         // given
         Long userId = 1L;
         Long userCouponId = null;
         Long productPrice = 10000L;
 
-        ApplyUserCouponRequest request = new ApplyUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
 
         // when then
         mockMvc.perform(
@@ -166,12 +174,12 @@ class CouponControllerTest {
 
     @DisplayName("쿠폰 적용을 요청할 때는 사용자 아이디가 필요하다.")
     @Test
-    public void applyCouponWithoutUserId() throws Exception {
+    public void useCouponWithoutUserId() throws Exception {
         // given
         Long userCouponId = 1L;
         Long productPrice = 10000L;
 
-        ApplyUserCouponRequest request = new ApplyUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
 
         // when then
         mockMvc.perform(
@@ -186,13 +194,13 @@ class CouponControllerTest {
 
     @DisplayName("쿠폰 적용을 요청할 때, 사용자 아이디는 숫자다")
     @Test
-    public void applyCouponWithInvalidFormatUserId() throws Exception {
+    public void useCouponWithInvalidFormatUserId() throws Exception {
         // given
         Long userCouponId = 1L;
         Long productPrice = 10000L;
         String userId = "invalid";
 
-        ApplyUserCouponRequest request = new ApplyUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
 
         // when then
         mockMvc.perform(
@@ -208,13 +216,13 @@ class CouponControllerTest {
 
     @DisplayName("쿠폰 발급 요청할 때는, 상품 가격이 필요하다.")
     @Test
-    public void applyCouponWithoutProductPrice() throws Exception {
+    public void useCouponWithoutProductPrice() throws Exception {
         // given
         Long userId = 1L;
         Long userCouponId = 1L;
         Long productPrice = null;
 
-        ApplyUserCouponRequest request = new ApplyUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
 
         // when then
         mockMvc.perform(
