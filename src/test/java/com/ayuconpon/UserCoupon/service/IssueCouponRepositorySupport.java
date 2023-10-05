@@ -1,4 +1,4 @@
-package com.ayuconpon.UserCoupon.service;
+package com.ayuconpon.usercoupon.service;
 
 
 import org.junit.jupiter.api.BeforeEach;

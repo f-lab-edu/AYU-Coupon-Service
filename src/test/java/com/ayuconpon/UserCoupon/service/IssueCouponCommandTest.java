@@ -1,6 +1,5 @@
-package com.ayuconpon.UserCoupon.service;
+package com.ayuconpon.usercoupon.service;
 
-import com.ayuconpon.userCoupon.service.IssueUserCouponCommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

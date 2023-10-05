@@ -1,10 +1,10 @@
-package com.ayuconpon.userCoupon.domain.entity;
+package com.ayuconpon.usercoupon.domain.entity;
 
 import com.ayuconpon.common.BaseEntity;
 import com.ayuconpon.common.Money;
 import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
 import com.ayuconpon.common.exception.ExpiredUserCouponException;
-import com.ayuconpon.userCoupon.domain.value.Status;
+import com.ayuconpon.usercoupon.domain.value.Status;
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

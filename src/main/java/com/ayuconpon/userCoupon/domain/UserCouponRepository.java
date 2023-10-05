@@ -1,6 +1,6 @@
-package com.ayuconpon.userCoupon.domain;
+package com.ayuconpon.usercoupon.domain;
 
-import com.ayuconpon.userCoupon.domain.entity.UserCoupon;
+import com.ayuconpon.usercoupon.domain.entity.UserCoupon;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

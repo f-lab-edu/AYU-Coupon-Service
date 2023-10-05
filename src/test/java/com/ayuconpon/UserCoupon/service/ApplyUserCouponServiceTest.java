@@ -1,13 +1,9 @@
-package com.ayuconpon.UserCoupon.service;
+package com.ayuconpon.usercoupon.service;
 
 import com.ayuconpon.common.Money;
 import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
 import com.ayuconpon.common.exception.NotFoundUserCouponException;
 import com.ayuconpon.common.exception.RequireRegistrationException;
-import com.ayuconpon.userCoupon.service.ApplyUserCouponCommand;
-import com.ayuconpon.userCoupon.service.ApplyUserCouponService;
-import com.ayuconpon.userCoupon.service.IssueUserCouponCommand;
-import com.ayuconpon.userCoupon.service.IssueUserCouponService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

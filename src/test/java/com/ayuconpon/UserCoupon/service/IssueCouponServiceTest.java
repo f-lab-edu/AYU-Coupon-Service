@@ -1,9 +1,7 @@
-package com.ayuconpon.UserCoupon.service;
+package com.ayuconpon.usercoupon.service;
 
-import com.ayuconpon.userCoupon.service.IssueUserCouponCommand;
-import com.ayuconpon.userCoupon.service.IssueUserCouponService;
 import com.ayuconpon.coupon.domain.CouponRepository;
-import com.ayuconpon.userCoupon.domain.UserCouponRepository;
+import com.ayuconpon.usercoupon.domain.UserCouponRepository;
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.common.exception.DuplicatedCouponException;
 import com.ayuconpon.common.exception.NotFoundCouponException;

@@ -1,11 +1,11 @@
-package com.ayuconpon.userCoupon.controller;
+package com.ayuconpon.usercoupon.controller;
 
-import com.ayuconpon.userCoupon.controller.request.ApplyUserCouponRequest;
-import com.ayuconpon.userCoupon.controller.request.IssueUserCouponRequest;
-import com.ayuconpon.userCoupon.controller.response.IssueUserCouponResponse;
-import com.ayuconpon.userCoupon.controller.response.ApplyUserCouponResponse;
-import com.ayuconpon.userCoupon.service.IssueUserCouponCommand;
-import com.ayuconpon.userCoupon.service.IssueUserCouponService;
+import com.ayuconpon.usercoupon.controller.request.ApplyUserCouponRequest;
+import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
+import com.ayuconpon.usercoupon.controller.response.IssueUserCouponResponse;
+import com.ayuconpon.usercoupon.controller.response.ApplyUserCouponResponse;
+import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.IssueUserCouponService;
 import com.ayuconpon.common.resolver.UserId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

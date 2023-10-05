@@ -1,4 +1,4 @@
-package com.ayuconpon.userCoupon.controller.response;
+package com.ayuconpon.usercoupon.controller.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

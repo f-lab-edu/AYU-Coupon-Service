@@ -1,4 +1,4 @@
-package com.ayuconpon.userCoupon.controller.request;
+package com.ayuconpon.usercoupon.controller.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
