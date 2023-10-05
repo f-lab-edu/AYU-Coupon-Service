@@ -1,10 +1,9 @@
-package com.ayuconpon.UserCoupon.controller;
+package com.ayuconpon.usercoupon.controller;
 
-import com.ayuconpon.userCoupon.controller.UserCouponController;
-import com.ayuconpon.userCoupon.controller.request.ApplyUserCouponRequest;
-import com.ayuconpon.userCoupon.controller.request.IssueUserCouponRequest;
-import com.ayuconpon.userCoupon.service.IssueUserCouponCommand;
-import com.ayuconpon.userCoupon.service.IssueUserCouponService;
+import com.ayuconpon.usercoupon.controller.request.ApplyUserCouponRequest;
+import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
+import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.IssueUserCouponService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

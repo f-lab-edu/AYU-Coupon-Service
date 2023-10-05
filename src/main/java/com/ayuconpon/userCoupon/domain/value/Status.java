@@ -1,4 +1,4 @@
-package com.ayuconpon.userCoupon.domain.value;
+package com.ayuconpon.usercoupon.domain.value;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

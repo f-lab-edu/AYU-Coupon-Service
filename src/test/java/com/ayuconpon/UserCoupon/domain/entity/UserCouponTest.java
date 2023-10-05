@@ -1,4 +1,4 @@
-package com.ayuconpon.UserCoupon.domain.entity;
+package com.ayuconpon.usercoupon.domain.entity;
 
 import com.ayuconpon.common.Money;
 import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
@@ -8,7 +8,6 @@ import com.ayuconpon.coupon.domain.value.DiscountPolicy;
 import com.ayuconpon.coupon.domain.value.DiscountType;
 import com.ayuconpon.coupon.domain.value.IssuePeriod;
 import com.ayuconpon.coupon.domain.value.Quantity;
-import com.ayuconpon.userCoupon.domain.entity.UserCoupon;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

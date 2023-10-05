@@ -1,4 +1,4 @@
-package com.ayuconpon.userCoupon.service;
+package com.ayuconpon.usercoupon.service;
 
 import com.ayuconpon.common.Money;
 import org.springframework.util.Assert;
