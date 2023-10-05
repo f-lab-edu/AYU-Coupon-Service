@@ -15,10 +15,10 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ApplyUserCouponServiceTest extends IssueCouponRepositorySupport {
+class UseUserCouponServiceTest extends IssueCouponRepositorySupport {
 
     @Autowired
-    private ApplyUserCouponService applyUserCouponService;
+    private UseUserCouponService useUserCouponService;
     @Autowired
     private IssueUserCouponService issueUserCouponService;
 
@@ -29,10 +29,10 @@ class ApplyUserCouponServiceTest extends IssueCouponRepositorySupport {
         Long userId = 1L;
         Long userCouponId = getDefaultUserCouponId(userId);
         Money productPrice = Money.wons(10000L);
-        ApplyUserCouponCommand command = new ApplyUserCouponCommand(userId, userCouponId, productPrice);
+        UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, productPrice);
 
         //when
-        Money discountedProductPrice = applyUserCouponService.use(command);
+        Money discountedProductPrice = useUserCouponService.use(command);
 
         //then
         assertThat(discountedProductPrice.getValue()).isEqualTo(9000L);
@@ -45,10 +45,10 @@ class ApplyUserCouponServiceTest extends IssueCouponRepositorySupport {
         Long invalidUserId = 0L;
         Long userCouponId = 1L;
         Money productPrice = Money.wons(10000L);
-        ApplyUserCouponCommand command = new ApplyUserCouponCommand(invalidUserId, userCouponId, productPrice);
+        UseUserCouponCommand command = new UseUserCouponCommand(invalidUserId, userCouponId, productPrice);
 
         //when then
-        assertThatThrownBy(() -> applyUserCouponService.use(command))
+        assertThatThrownBy(() -> useUserCouponService.use(command))
                 .isInstanceOf(RequireRegistrationException.class)
                 .hasMessage("회원 가입이 필요한 사용자입니다.");
     }
@@ -61,11 +61,11 @@ class ApplyUserCouponServiceTest extends IssueCouponRepositorySupport {
         Long userId = 1L;
         Long userCouponId = getDefaultUserCouponId(anotherUserId);
         Money productPrice = Money.wons(10000L);
-        ApplyUserCouponCommand command = new ApplyUserCouponCommand(userId, userCouponId, productPrice);
+        UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, productPrice);
 
 
         //when then
-        assertThatThrownBy(() -> applyUserCouponService.use(command))
+        assertThatThrownBy(() -> useUserCouponService.use(command))
                 .isInstanceOf(NotFoundUserCouponException.class)
                 .hasMessage("요청한 쿠폰이 존재하지 않습니다.");
     }
@@ -87,11 +87,11 @@ class ApplyUserCouponServiceTest extends IssueCouponRepositorySupport {
         CountDownLatch latch = new CountDownLatch(numberOfRequest);
 
         //when
-        ApplyUserCouponCommand command = new ApplyUserCouponCommand(userId, userCouponId, money);
+        UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, money);
         for (int i = 0; i < numberOfRequest; i++) {
             service.execute(() -> {
                 try {
-                    applyUserCouponService.use(command);
+                    useUserCouponService.use(command);
                     successCount++;
                 } catch (AlreadyUsedUserCouponException e) {
                     failCount++;

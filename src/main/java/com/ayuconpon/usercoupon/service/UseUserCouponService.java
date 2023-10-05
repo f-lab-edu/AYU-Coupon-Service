@@ -14,18 +14,18 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
-public class ApplyUserCouponService {
+public class UseUserCouponService {
 
     private final UserCouponRepository userCouponRepository;
     private final UserRepository userRepository;
 
     @Transactional
-    public Money use(ApplyUserCouponCommand command) {
+    public Money use(UseUserCouponCommand command) {
         validateRegisteredUser(command);
         return applyUserCoupon(command);
     }
 
-    private Money applyUserCoupon(ApplyUserCouponCommand command) {
+    private Money applyUserCoupon(UseUserCouponCommand command) {
         UserCoupon userCoupon = userCouponRepository.findByIdWithPessimisticLock(command.userCouponId(), command.userId())
                 .orElseThrow(NotFoundUserCouponException::new);
 
@@ -33,7 +33,7 @@ public class ApplyUserCouponService {
         return userCoupon.use(command.productPrice(), currentTime);
     }
 
-    private void validateRegisteredUser(ApplyUserCouponCommand command) {
+    private void validateRegisteredUser(UseUserCouponCommand command) {
         boolean isExist = userRepository.existsById(command.userId());
         if (!isExist) throw new RequireRegistrationException();
     }
