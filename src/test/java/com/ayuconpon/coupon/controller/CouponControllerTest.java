@@ -2,7 +2,7 @@ package com.ayuconpon.coupon.controller;
 
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.coupon.service.CouponDto;
-import com.ayuconpon.coupon.service.ShowCouonsService;
+import com.ayuconpon.coupon.service.ShowCouponsService;
 import com.ayuconpon.util.CouponUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class CouponControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ShowCouonsService showCouonsService;
+    private ShowCouponsService showCouonsService;
 
     @DisplayName("발행된 전체 쿠폰 목록을 조회할 수 있다.")
     @Test
@@ -40,7 +40,7 @@ class CouponControllerTest {
         couponDtos.add(CouponDto.from(fixDiscountCoupon));
         couponDtos.add(CouponDto.from(rateDiscountCoupon));
 
-        given(showCouonsService.getCouons()).willReturn(couponDtos);
+        given(showCouonsService.getCoupons()).willReturn(couponDtos);
 
         //when //then
         mockMvc.perform(

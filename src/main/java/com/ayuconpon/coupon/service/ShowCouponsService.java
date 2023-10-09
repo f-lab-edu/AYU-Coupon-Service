@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShowCouonsService {
+public class ShowCouponsService {
 
-    public List<CouponDto> getCouons() {
+    public List<CouponDto> getCoupons() {
         return null;
     }
 

@@ -26,7 +26,7 @@ public class CouponDto {
         couponDto.id = coupon.getCouponId();
         couponDto.name = coupon.getName();
 
-        // 디미터 원칙 위배
+        // 아래 3줄은 디미터 원칙 위배
         couponDto.discountType = coupon.getDiscountPolicy().getDiscountType();
         couponDto.discountContent = getDiscountContent(coupon);
         couponDto.quantity = coupon.getQuantity().getLeftQuantity();
