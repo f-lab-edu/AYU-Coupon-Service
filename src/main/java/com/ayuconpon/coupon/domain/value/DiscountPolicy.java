@@ -4,10 +4,12 @@ import com.ayuconpon.common.Money;
 import com.ayuconpon.common.MoneyConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountPolicy {
