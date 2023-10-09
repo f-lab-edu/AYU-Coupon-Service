@@ -5,6 +5,7 @@ import com.ayuconpon.coupon.domain.value.DiscountPolicy;
 import com.ayuconpon.coupon.domain.value.DiscountType;
 import com.ayuconpon.coupon.domain.value.IssuePeriod;
 import com.ayuconpon.coupon.domain.value.Quantity;
+import com.ayuconpon.util.CouponUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class CouponTest {
     public void issueUserCoupon() throws Exception {
         // given
         Quantity quantity = Quantity.of(100L);
-        Coupon coupon = getDefaultFixDiscountCouponWithQuantity(quantity);
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCouponWithQuantity(quantity);
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
@@ -36,7 +37,7 @@ class CouponTest {
     @Test
     public void issueUserCouponAfterIssuePeriod() {
         // given
-        Coupon coupon = getDefaultFixDiscountCoupon();
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 1);
 
@@ -50,7 +51,7 @@ class CouponTest {
     @Test
     public void issueUserCouponBeforeIssuePeriod() {
         // given
-        Coupon coupon = getDefaultFixDiscountCoupon();
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 22, 23, 59, 59);
 
@@ -65,7 +66,7 @@ class CouponTest {
     public void issueUserCouponWithZeroQuantity() {
         // given
         Quantity quantity = Quantity.of(0L);
-        Coupon coupon = getDefaultFixDiscountCouponWithQuantity(quantity);
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCouponWithQuantity(quantity);
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
@@ -80,7 +81,7 @@ class CouponTest {
     public void applyFixedPriceDiscountCoupon() {
         //given
         Money productPrice = Money.wons(10000L);
-        Coupon coupon = getDefaultFixDiscountCoupon();
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
 
         //when
         Money discountedProductPrice = coupon.apply(productPrice);
@@ -94,7 +95,7 @@ class CouponTest {
     public void applyRatePriceDiscountCoupon() {
         //given
         Money productPrice = Money.wons(10000L);
-        Coupon coupon = getDefaultRateDiscountCoupon();
+        Coupon coupon = CouponUtil.getDefaultRateDiscountCoupon();
 
         //when
         Money discountedProductPrice = coupon.apply(productPrice);
@@ -108,77 +109,12 @@ class CouponTest {
     public void  applyCouponWithLowerProductPriceThanMinProductPrice() {
         //given
         Money productPrice = Money.wons(4999L);
-        Coupon coupon = getDefaultFixDiscountCoupon();
+        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
 
         //when //then
         assertThatThrownBy(() -> coupon.apply(productPrice))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("상품 금액이 쿠폰 적용 가능한 최소 금액보다 낮습니다.");
      }
-
-    private Coupon getDefaultFixDiscountCoupon() {
-        String name = "기본 쿠폰";
-        DiscountPolicy discountPolicy = DiscountPolicy.of(
-                DiscountType.FIX_DISCOUNT,
-                null,
-                Money.wons(1000L));
-        Quantity quantity = Quantity.of(100L);
-        IssuePeriod issuePeriod = IssuePeriod.of(
-                LocalDateTime.of(2023, 9, 23, 0, 0, 0),
-                LocalDateTime.of(2023, 9, 24, 0, 0, 0));
-        Money minProductPrice = Money.wons(5000L);
-        Long usageHours = 72L;
-
-        return new Coupon(
-                name,
-                discountPolicy,
-                quantity,
-                issuePeriod,
-                minProductPrice,
-                usageHours);
-    }
-
-    private Coupon getDefaultRateDiscountCoupon() {
-        String name = "기본 쿠폰";
-        DiscountPolicy discountPolicy = DiscountPolicy.of(
-                DiscountType.RATE_DISCOUNT,
-                new BigDecimal("0.1"),
-                null);
-        Quantity quantity = Quantity.of(100L);
-        IssuePeriod issuePeriod = IssuePeriod.of(
-                LocalDateTime.of(2023, 9, 23, 0, 0, 0),
-                LocalDateTime.of(2023, 9, 24, 0, 0, 0));
-        Money minProductPrice = Money.wons(5000L);
-        Long usageHours = 72L;
-
-        return new Coupon(
-                name,
-                discountPolicy,
-                quantity,
-                issuePeriod,
-                minProductPrice,
-                usageHours);
-    }
-
-    private Coupon getDefaultFixDiscountCouponWithQuantity(Quantity quantity) {
-        String name = "기본 쿠폰";
-        DiscountPolicy discountPolicy = DiscountPolicy.of(
-                DiscountType.FIX_DISCOUNT,
-                null,
-                Money.wons(1000L));
-        IssuePeriod issuePeriod = IssuePeriod.of(
-                LocalDateTime.of(2023, 9, 23, 0, 0, 0),
-                LocalDateTime.of(2023, 9, 24, 0, 0, 0));
-        Money minProductPrice = Money.wons(5000L);
-        Long usageHours = 72L;
-
-        return new Coupon(
-                name,
-                discountPolicy,
-                quantity,
-                issuePeriod,
-                minProductPrice,
-                usageHours);
-    }
 
 }
