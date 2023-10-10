@@ -4,7 +4,7 @@ import com.ayuconpon.common.Money;
 import com.ayuconpon.usercoupon.controller.request.UseUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.response.IssueUserCouponResponse;
-import com.ayuconpon.usercoupon.controller.response.ApplyUserCouponResponse;
+import com.ayuconpon.usercoupon.controller.response.UseUserCouponResponse;
 import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
 import com.ayuconpon.usercoupon.service.IssueUserCouponService;
 import com.ayuconpon.common.resolver.UserId;
@@ -23,7 +23,7 @@ public class UserCouponController {
     private final IssueUserCouponService issueUserCouponService;
     private final UseUserCouponService useUserCouponService;
 
-    @PostMapping("/users/coupons")
+    @PostMapping("/v1/users/me/user-coupons")
     public ResponseEntity<IssueUserCouponResponse> issueCoupon(
             @UserId Long userId,
             @Valid @RequestBody IssueUserCouponRequest issueUserCouponRequest) {
@@ -34,17 +34,18 @@ public class UserCouponController {
         return ResponseEntity.ok(new IssueUserCouponResponse(issuedUserCouponId));
     }
 
-    @PatchMapping("/users/coupons")
-    public ResponseEntity<ApplyUserCouponResponse> useCoupon(
+    @PatchMapping("/v1/users/me/user-coupons/{userCouponId}")
+    public ResponseEntity<UseUserCouponResponse> useCoupon(
             @UserId Long userid,
-            @Valid @RequestBody UseUserCouponRequest applyUserCouponRequest) {
+            @PathVariable Long userCouponId,
+            @Valid @RequestBody UseUserCouponRequest useUserCouponRequest) {
 
         UseUserCouponCommand command = new UseUserCouponCommand(userid,
-                applyUserCouponRequest.getUserCouponId(),
-                Money.wons(applyUserCouponRequest.getProductPrice()));
+                userCouponId,
+                Money.wons(useUserCouponRequest.getProductPrice()));
         Money discountedProductPrice = useUserCouponService.use(command);
 
-        return ResponseEntity.ok(new ApplyUserCouponResponse(discountedProductPrice.getValue()));
+        return ResponseEntity.ok(new UseUserCouponResponse(discountedProductPrice.getValue()));
     }
 
 }

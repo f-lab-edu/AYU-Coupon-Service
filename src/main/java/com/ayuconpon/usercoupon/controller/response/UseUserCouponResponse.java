@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ApplyUserCouponResponse {
+public class UseUserCouponResponse {
 
     private Long discountedProductPrice;
 
-    public ApplyUserCouponResponse(Long discountedProductPrice) {
+    public UseUserCouponResponse(Long discountedProductPrice) {
         this.discountedProductPrice = discountedProductPrice;
     }
 
