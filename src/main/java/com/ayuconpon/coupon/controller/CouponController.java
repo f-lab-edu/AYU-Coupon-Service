@@ -18,7 +18,7 @@ public class CouponController {
 
     private final ShowCouponsService showCouponsService;
 
-    @GetMapping("/coupons")
+    @GetMapping("/v1/coupons")
     public ResponseEntity<ShowCouponsResponse> showCoupons(Pageable pageable) {
         List<CouponDto> couponDtos = showCouponsService.getCoupons(pageable);
         ShowCouponsResponse showCouponsResponse = ShowCouponsResponse.from(couponDtos);

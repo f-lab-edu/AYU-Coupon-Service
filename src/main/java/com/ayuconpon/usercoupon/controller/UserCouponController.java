@@ -23,7 +23,7 @@ public class UserCouponController {
     private final IssueUserCouponService issueUserCouponService;
     private final UseUserCouponService useUserCouponService;
 
-    @PostMapping("/users/coupons")
+    @PostMapping("/v1/users/me/user-coupons")
     public ResponseEntity<IssueUserCouponResponse> issueCoupon(
             @UserId Long userId,
             @Valid @RequestBody IssueUserCouponRequest issueUserCouponRequest) {
@@ -34,14 +34,15 @@ public class UserCouponController {
         return ResponseEntity.ok(new IssueUserCouponResponse(issuedUserCouponId));
     }
 
-    @PatchMapping("/users/coupons")
+    @PatchMapping("/v1/users/me/user-coupons/{userCouponId}")
     public ResponseEntity<ApplyUserCouponResponse> useCoupon(
             @UserId Long userid,
-            @Valid @RequestBody UseUserCouponRequest applyUserCouponRequest) {
+            @PathVariable Long userCouponId,
+            @Valid @RequestBody UseUserCouponRequest useUserCouponRequest) {
 
         UseUserCouponCommand command = new UseUserCouponCommand(userid,
-                applyUserCouponRequest.getUserCouponId(),
-                Money.wons(applyUserCouponRequest.getProductPrice()));
+                userCouponId,
+                Money.wons(useUserCouponRequest.getProductPrice()));
         Money discountedProductPrice = useUserCouponService.use(command);
 
         return ResponseEntity.ok(new ApplyUserCouponResponse(discountedProductPrice.getValue()));

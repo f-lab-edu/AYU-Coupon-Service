@@ -52,7 +52,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/users/coupons")
+                        post("/v1/users/me/user-coupons")
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +73,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/users/coupons")
+                        post("/v1/users/me/user-coupons")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -93,7 +93,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/users/coupons")
+                        post("/v1/users/me/user-coupons")
                                 .content(objectMapper.writeValueAsString(request))
                                 .header("User-Id", String.valueOf(userId))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class CouponControllerTest {
 
         // when then
         mockMvc.perform(
-                        post("/users/coupons")
+                        post("/v1/users/me/user-coupons")
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -133,14 +133,14 @@ class CouponControllerTest {
         Long productPrice = 10000L;
         Money discountedProductPrice = Money.wons(9000L);
 
-        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(productPrice);
         UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, Money.wons(productPrice));
 
         given(useUserCouponService.use(command)).willReturn(discountedProductPrice);
 
         // when then
         mockMvc.perform(
-                        patch("/users/coupons")
+                        patch("/v1/users/me/user-coupons/" + userCouponId)
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -150,28 +150,6 @@ class CouponControllerTest {
                 .andExpect(jsonPath("$.discountedProductPrice").value(String.valueOf(discountedProductPrice.getValue())));
     }
 
-    @DisplayName("쿠폰 적용을 요청할 때는, 발급된 쿠폰 아이디가 필요하다.")
-    @Test
-    public void useCouponWithoutCouponStockId() throws Exception {
-        // given
-        Long userId = 1L;
-        Long userCouponId = null;
-        Long productPrice = 10000L;
-
-        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
-
-        // when then
-        mockMvc.perform(
-                        patch("/users/coupons")
-                                .header("User-Id", String.valueOf(userId))
-                                .content(objectMapper.writeValueAsString(request))
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("쿠폰 아이디가 비어있습니다."));
-    }
-
     @DisplayName("쿠폰 적용을 요청할 때는 사용자 아이디가 필요하다.")
     @Test
     public void useCouponWithoutUserId() throws Exception {
@@ -179,11 +157,11 @@ class CouponControllerTest {
         Long userCouponId = 1L;
         Long productPrice = 10000L;
 
-        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(productPrice);
 
         // when then
         mockMvc.perform(
-                        patch("/users/coupons")
+                        patch("/v1/users/me/user-coupons/" + userCouponId)
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -200,11 +178,11 @@ class CouponControllerTest {
         Long productPrice = 10000L;
         String userId = "invalid";
 
-        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(productPrice);
 
         // when then
         mockMvc.perform(
-                        patch("/users/coupons")
+                        patch("/v1/users/me/user-coupons/" + userCouponId)
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -222,11 +200,11 @@ class CouponControllerTest {
         Long userCouponId = 1L;
         Long productPrice = null;
 
-        UseUserCouponRequest request = new UseUserCouponRequest(userCouponId, productPrice);
+        UseUserCouponRequest request = new UseUserCouponRequest(productPrice);
 
         // when then
         mockMvc.perform(
-                        patch("/users/coupons")
+                        patch("/v1/users/me/user-coupons/" + userCouponId)
                                 .header("User-Id", String.valueOf(userId))
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)

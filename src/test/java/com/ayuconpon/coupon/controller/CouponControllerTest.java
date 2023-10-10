@@ -51,7 +51,7 @@ class CouponControllerTest {
 
         //when //then
         mockMvc.perform(
-                        get("/coupons")
+                        get("/v1/coupons")
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.couponDtoList[0].id").value(fixDiscountCoupon.getCouponId()))
