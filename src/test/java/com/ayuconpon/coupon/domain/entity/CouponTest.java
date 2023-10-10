@@ -1,15 +1,11 @@
 package com.ayuconpon.coupon.domain.entity;
 
 import com.ayuconpon.common.Money;
-import com.ayuconpon.coupon.domain.value.DiscountPolicy;
-import com.ayuconpon.coupon.domain.value.DiscountType;
-import com.ayuconpon.coupon.domain.value.IssuePeriod;
 import com.ayuconpon.coupon.domain.value.Quantity;
-import com.ayuconpon.util.CouponUtil;
+import com.ayuconpon.util.Coupons;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +18,7 @@ class CouponTest {
     public void issueUserCoupon() throws Exception {
         // given
         Quantity quantity = Quantity.of(100L);
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCouponWithQuantity(quantity);
+        Coupon coupon = Coupons.getDefaultFixDiscountCouponWithQuantity(quantity);
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
@@ -37,7 +33,7 @@ class CouponTest {
     @Test
     public void issueUserCouponAfterIssuePeriod() {
         // given
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
+        Coupon coupon = Coupons.getDefaultFixDiscountCoupon();
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 1);
 
@@ -51,7 +47,7 @@ class CouponTest {
     @Test
     public void issueUserCouponBeforeIssuePeriod() {
         // given
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
+        Coupon coupon = Coupons.getDefaultFixDiscountCoupon();
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 22, 23, 59, 59);
 
@@ -66,7 +62,7 @@ class CouponTest {
     public void issueUserCouponWithZeroQuantity() {
         // given
         Quantity quantity = Quantity.of(0L);
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCouponWithQuantity(quantity);
+        Coupon coupon = Coupons.getDefaultFixDiscountCouponWithQuantity(quantity);
 
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
@@ -81,7 +77,7 @@ class CouponTest {
     public void applyFixedPriceDiscountCoupon() {
         //given
         Money productPrice = Money.wons(10000L);
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
+        Coupon coupon = Coupons.getDefaultFixDiscountCoupon();
 
         //when
         Money discountedProductPrice = coupon.apply(productPrice);
@@ -95,7 +91,7 @@ class CouponTest {
     public void applyRatePriceDiscountCoupon() {
         //given
         Money productPrice = Money.wons(10000L);
-        Coupon coupon = CouponUtil.getDefaultRateDiscountCoupon();
+        Coupon coupon = Coupons.getDefaultRateDiscountCoupon();
 
         //when
         Money discountedProductPrice = coupon.apply(productPrice);
@@ -109,7 +105,7 @@ class CouponTest {
     public void  applyCouponWithLowerProductPriceThanMinProductPrice() {
         //given
         Money productPrice = Money.wons(4999L);
-        Coupon coupon = CouponUtil.getDefaultFixDiscountCoupon();
+        Coupon coupon = Coupons.getDefaultFixDiscountCoupon();
 
         //when //then
         assertThatThrownBy(() -> coupon.apply(productPrice))
