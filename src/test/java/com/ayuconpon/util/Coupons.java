@@ -10,7 +10,7 @@ import com.ayuconpon.coupon.domain.value.Quantity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class CouponUtil {
+public class Coupons {
 
     public static Coupon getDefaultFixDiscountCoupon() {
         String name = "기본 쿠폰";

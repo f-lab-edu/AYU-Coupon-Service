@@ -3,18 +3,20 @@ package com.ayuconpon.coupon.domain.value;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class IssuePeriod {
 
     @Column(name = "started_at")
-    LocalDateTime startedAt;
+    private LocalDateTime startedAt;
     @Column(name = "finished_at")
-    LocalDateTime finishedAt;
+    private LocalDateTime finishedAt;
 
     protected IssuePeriod(LocalDateTime startedAt, LocalDateTime finishedAt) {
         this.startedAt = startedAt;
