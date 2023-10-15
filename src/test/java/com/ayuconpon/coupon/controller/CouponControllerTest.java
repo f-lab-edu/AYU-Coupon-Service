@@ -47,7 +47,7 @@ class CouponControllerTest {
         couponDtos.add(couponMapper.toCouponDto(fixDiscountCoupon));
         couponDtos.add(couponMapper.toCouponDto(rateDiscountCoupon));
 
-        given(showCouponsService.getCoupons(any())).willReturn(couponDtos);
+        given(showCouponsService.getCouponsInProgress(any(), any())).willReturn(couponDtos);
 
         //when //then
         mockMvc.perform(
