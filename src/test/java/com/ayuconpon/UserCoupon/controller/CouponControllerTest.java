@@ -1,12 +1,13 @@
 package com.ayuconpon.usercoupon.controller;
 
 import com.ayuconpon.common.Money;
+import com.ayuconpon.coupon.domain.entity.Coupon;
+import com.ayuconpon.coupon.domain.value.Quantity;
 import com.ayuconpon.usercoupon.controller.request.UseUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
-import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
-import com.ayuconpon.usercoupon.service.IssueUserCouponService;
-import com.ayuconpon.usercoupon.service.UseUserCouponCommand;
-import com.ayuconpon.usercoupon.service.UseUserCouponService;
+import com.ayuconpon.usercoupon.domain.entity.UserCoupon;
+import com.ayuconpon.usercoupon.service.*;
+import com.ayuconpon.util.Coupons;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,16 +15,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(controllers = {UserCouponController.class})
+@Import(UserCouponMapperImpl.class)
 class CouponControllerTest {
 
     @Autowired
@@ -33,9 +42,13 @@ class CouponControllerTest {
     private IssueUserCouponService issueUserCouponService;
     @MockBean
     private UseUserCouponService useUserCouponService;
+    @MockBean
+    private ShowUserCouponService showUserCouponService;
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @DisplayName("쿠폰 발급을 요청한다.")
     @Test
@@ -212,6 +225,53 @@ class CouponControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("상품 가격이 비어있습니다."));
+    }
+
+    @DisplayName("사용자 자신의 쿠폰 목록을 조회할 수 있다.")
+    @Test
+    public void showUserCoupons() throws Exception {
+        //given
+        List<UserCouponDto> userCouponDtos = getDefaultUserCouopnDtos();
+
+        given(showUserCouponService.getUserCouponsInProgress(any(), any())).willReturn(userCouponDtos);
+
+        //when //then
+        mockMvc.perform(
+                        get("/v1/users/me/user-coupons")
+                                .header("User-Id", String.valueOf(1L))
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userCouponDtoList[0].userCouponId").value(userCouponDtos.get(0).getUserCouponId()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].couponName").value(userCouponDtos.get(0).getCouponName()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].discountType").value(userCouponDtos.get(0).getDiscountType().toString()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].discountContent").value(userCouponDtos.get(0).getDiscountContent()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].minProductPrice").value(userCouponDtos.get(0).getMinProductPrice()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].status").value(userCouponDtos.get(0).getStatus().toString()))
+                .andExpect(jsonPath("$.userCouponDtoList[0].expiredAt").value(userCouponDtos.get(0).getExpiredAt()))
+
+                .andExpect(jsonPath("$.userCouponDtoList[1].userCouponId").value(userCouponDtos.get(1).getUserCouponId()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].couponName").value(userCouponDtos.get(1).getCouponName()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].discountType").value(userCouponDtos.get(1).getDiscountType().toString()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].discountContent").value(userCouponDtos.get(1).getDiscountContent()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].minProductPrice").value(userCouponDtos.get(1).getMinProductPrice()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].status").value(userCouponDtos.get(1).getStatus().toString()))
+                .andExpect(jsonPath("$.userCouponDtoList[1].expiredAt").value(userCouponDtos.get(1).getExpiredAt())
+                );
+    }
+
+    private List<UserCouponDto> getDefaultUserCouopnDtos() {
+        Long userId = 1L;
+        LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
+        Coupon fixDiscountCoupon = Coupons.getDefaultFixDiscountCouponWithQuantity(Quantity.of(0L));
+        Coupon rateDiscountCoupon = Coupons.getDefaultRateDiscountCoupon();
+        UserCoupon fixUserCoupon = new UserCoupon(userId, fixDiscountCoupon, currentTime);
+        UserCoupon rateUserCoupon = new UserCoupon(userId, rateDiscountCoupon, currentTime);
+
+        return new ArrayList<>(
+                List.of(userCouponMapper.userCouponDto(fixUserCoupon),
+                        userCouponMapper.userCouponDto(rateUserCoupon))
+        );
+
     }
 
 }
