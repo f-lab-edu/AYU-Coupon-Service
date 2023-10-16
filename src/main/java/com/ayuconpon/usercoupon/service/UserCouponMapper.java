@@ -22,7 +22,7 @@ public interface UserCouponMapper {
     @Mapping(source = "coupon.minProductPrice", target = "minProductPrice", qualifiedByName = "minProductPrice")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "expiredAt", target = "expiredAt", qualifiedByName = "localDateTimeToString")
-    UserCouponDto userCouponDto(UserCoupon userCoupon);
+    UserCouponDto toUserCouponDto(UserCoupon userCoupon);
 
     @Named("localDateTimeToString")
     static String localDateTimeToString(LocalDateTime localDateTime) {

@@ -233,7 +233,7 @@ class CouponControllerTest {
         //given
         List<UserCouponDto> userCouponDtos = getDefaultUserCouopnDtos();
 
-        given(showUserCouponService.getUnexpiredUserCoupons(any(), any())).willReturn(userCouponDtos);
+        given(showUserCouponService.getUnexpiredUserCoupons(any(), any(), any())).willReturn(userCouponDtos);
 
         //when //then
         mockMvc.perform(
@@ -268,8 +268,8 @@ class CouponControllerTest {
         UserCoupon rateUserCoupon = new UserCoupon(userId, rateDiscountCoupon, currentTime);
 
         return new ArrayList<>(
-                List.of(userCouponMapper.userCouponDto(fixUserCoupon),
-                        userCouponMapper.userCouponDto(rateUserCoupon))
+                List.of(userCouponMapper.toUserCouponDto(fixUserCoupon),
+                        userCouponMapper.toUserCouponDto(rateUserCoupon))
         );
 
     }

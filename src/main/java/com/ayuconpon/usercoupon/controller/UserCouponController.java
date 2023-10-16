@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class UserCouponController {
     @GetMapping("/v1/users/me/user-coupons")
     public ResponseEntity<ShowUserCouponsResponse> showUserCoupons(@UserId Long userId, Pageable pageable) {
 
-        List<UserCouponDto> userCouponDtos = showUserCouponService.getUnexpiredUserCoupons(userId, pageable);
+        List<UserCouponDto> userCouponDtos = showUserCouponService.getUnexpiredUserCoupons(userId, LocalDateTime.now(), pageable);
         ShowUserCouponsResponse response = ShowUserCouponsResponse.from(userCouponDtos);
 
         return ResponseEntity.ok(response);
