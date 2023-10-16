@@ -28,7 +28,7 @@ public class UserCouponController {
     @GetMapping("/v1/users/me/user-coupons")
     public ResponseEntity<ShowUserCouponsResponse> showUserCoupons(@UserId Long userId, Pageable pageable) {
 
-        List<UserCouponDto> userCouponDtos = showUserCouponService.getUserCouponsInProgress(userId, pageable);
+        List<UserCouponDto> userCouponDtos = showUserCouponService.getUnexpiredUserCoupons(userId, pageable);
         ShowUserCouponsResponse response = ShowUserCouponsResponse.from(userCouponDtos);
 
         return ResponseEntity.ok(response);

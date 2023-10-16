@@ -233,7 +233,7 @@ class CouponControllerTest {
         //given
         List<UserCouponDto> userCouponDtos = getDefaultUserCouopnDtos();
 
-        given(showUserCouponService.getUserCouponsInProgress(any(), any())).willReturn(userCouponDtos);
+        given(showUserCouponService.getUnexpiredUserCoupons(any(), any())).willReturn(userCouponDtos);
 
         //when //then
         mockMvc.perform(
