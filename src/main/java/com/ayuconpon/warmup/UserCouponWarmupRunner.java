@@ -1,4 +1,4 @@
-package com.ayuconpon.common.warmup;
+package com.ayuconpon.warmup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,6 @@ public class UserCouponWarmupRunner {
 
     @EventListener(ApplicationReadyEvent.class)
     public void warmup() {
-
         log.info("start UserCoupon warm up");
         try {
             IntStream.rangeClosed(1, WARM_UP_COUNT).forEach(i -> {

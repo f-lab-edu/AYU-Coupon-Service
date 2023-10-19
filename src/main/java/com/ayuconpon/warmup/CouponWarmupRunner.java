@@ -1,4 +1,4 @@
-package com.ayuconpon.common.warmup;
+package com.ayuconpon.warmup;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
