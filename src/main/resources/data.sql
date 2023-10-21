@@ -6,7 +6,7 @@ values (1, 'event fix coupon A','FIX_DISCOUNT', null, 1000, 1000, 1000,'2023-09-
 
 
 insert into user(user_id, name, status)
-values (1, 'userA', 'ACTIVE'),
+values (1, 'admin_userA', 'ACTIVE'),
        (2, 'userB', 'ACTIVE'),
        (3, 'userC', 'ACTIVE'),
        (4, 'userD', 'ACTIVE'),
