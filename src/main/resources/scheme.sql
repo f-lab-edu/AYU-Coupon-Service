@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `user_coupon` (
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`user_coupon_id`),
     INDEX `fk_coupon_id_idx` (`coupon_id` ASC) VISIBLE,
+    INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_coupon_coupon`
         FOREIGN KEY (`coupon_id`)
             REFERENCES `coupon` (`coupon_id`))
