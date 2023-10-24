@@ -1,5 +1,6 @@
 package com.ayuconpon.warmup;
 
+import com.ayuconpon.common.config.warmup.UserCouponWarmupProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -8,26 +9,31 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.stream.IntStream;
 
-@Component
 public class UserCouponWarmupRunner {
 
-    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
     private static final Logger log = LoggerFactory.getLogger(UserCouponWarmupRunner.class);
+    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
-    private static final Long ADMIN_USER_ID = 1L;
-    private static final Integer WARM_UP_COUNT = 5000;
+    private final Integer WARM_UP_COUNT;
+    private final Long DUMMY_USER_ID;
+    private final String USER_COUPONS_URL;
+    private final String USE_USER_COUPONS_URL;
+    private final String USE_COUPON_BODY;
+    private final String ISSUE_COUPON_BODY;
 
-    private static final String USER_COUPONS_URL = "http://localhost:8080/v1/users/me/user-coupons";
-    private static final String USE_USER_COUPONS_URL = "http://localhost:8080/v1/users/me/user-coupons/1";
-    private static final String USE_COUPON_BODY = "{ \"productPrice\" : \"10000\" }";
-    private static final String ISSUE_COUPON_BODY = "{ \"couponId\" : \"1\" }";
-
+    public UserCouponWarmupRunner(UserCouponWarmupProperties properties) {
+        WARM_UP_COUNT = properties.getWarmupCount();
+        DUMMY_USER_ID = properties.getDummyUserId();
+        USER_COUPONS_URL = properties.getUrl();
+        USE_USER_COUPONS_URL = USER_COUPONS_URL + "/" + properties.getDummyIssueCouponId();
+        USE_COUPON_BODY = properties.getUseUserCouponApiBody();
+        ISSUE_COUPON_BODY = properties.getIssueUserCouponApiBody();
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void warmup() {
@@ -70,7 +76,7 @@ public class UserCouponWarmupRunner {
         headers.add("Content-Type", "application/json");
         headers.add("Accept", "application/json");
         headers.add("Accept-Encoding", "gzip, deflate, br");
-        headers.add("User-Id", ADMIN_USER_ID.toString());
+        headers.add("User-Id", DUMMY_USER_ID.toString());
         return headers;
     }
 
