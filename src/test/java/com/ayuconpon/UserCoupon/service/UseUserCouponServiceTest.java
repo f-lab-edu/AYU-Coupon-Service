@@ -4,6 +4,8 @@ import com.ayuconpon.common.Money;
 import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
 import com.ayuconpon.common.exception.NotFoundUserCouponException;
 import com.ayuconpon.common.exception.RequireRegistrationException;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ class UseUserCouponServiceTest extends IssueCouponRepositorySupport {
     @Autowired
     private UseUserCouponService useUserCouponService;
     @Autowired
-    private IssueUserCouponService issueUserCouponService;
+    private IssueUserCouponFacade issueUserCouponService;
 
     @DisplayName("쿠폰 적용 요청을 보낼 수 있다.")
     @Test

@@ -7,6 +7,8 @@ import com.ayuconpon.usercoupon.controller.request.UseUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
 import com.ayuconpon.usercoupon.domain.entity.UserCoupon;
 import com.ayuconpon.usercoupon.service.*;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponFacade;
 import com.ayuconpon.util.Coupons;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +41,7 @@ class CouponControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IssueUserCouponService issueUserCouponService;
+    private IssueUserCouponFacade issueUserCouponService;
     @MockBean
     private UseUserCouponService useUserCouponService;
     @MockBean

@@ -8,6 +8,8 @@ import com.ayuconpon.usercoupon.controller.response.ShowUserCouponsResponse;
 import com.ayuconpon.usercoupon.controller.response.UseUserCouponResponse;
 import com.ayuconpon.usercoupon.service.*;
 import com.ayuconpon.common.resolver.UserId;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +24,7 @@ import java.util.List;
 @RestController
 public class UserCouponController {
 
-    private final IssueUserCouponService issueUserCouponService;
+    private final IssueUserCouponFacade issueUserCouponfacade;
     private final UseUserCouponService useUserCouponService;
     private final ShowUserCouponService showUserCouponService;
 
@@ -41,7 +43,7 @@ public class UserCouponController {
             @Valid @RequestBody IssueUserCouponRequest issueUserCouponRequest) {
 
         IssueUserCouponCommand command = new IssueUserCouponCommand(userId, issueUserCouponRequest.getCouponId());
-        Long issuedUserCouponId = issueUserCouponService.issue(command);
+        Long issuedUserCouponId = issueUserCouponfacade.issue(command);
 
         return ResponseEntity.ok(new IssueUserCouponResponse(issuedUserCouponId));
     }

@@ -1,6 +1,8 @@
 package com.ayuconpon.usercoupon.service;
 
 
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ class ShowUserCouponServiceTest {
     @Autowired
     private ShowUserCouponService showUserCouponService;
     @Autowired
-    private IssueUserCouponService issueUserCouponService;
+    private IssueUserCouponFacade issueUserCouponService;
 
     @DisplayName("사용자의 쿠폰 목록을 조회할 수 있다.")
     @Test

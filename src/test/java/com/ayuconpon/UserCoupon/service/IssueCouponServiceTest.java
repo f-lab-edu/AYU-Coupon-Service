@@ -6,12 +6,13 @@ import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.common.exception.DuplicatedCouponException;
 import com.ayuconpon.common.exception.NotFoundCouponException;
 import com.ayuconpon.common.exception.RequireRegistrationException;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.issue.IssueUserCouponFacade;
 import org.junit.jupiter.api.AfterEach;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CountDownLatch;
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 class IssueCouponServiceTest extends IssueCouponRepositorySupport {
 
     @Autowired
-    private IssueUserCouponService issueCouponService;
+    private IssueUserCouponFacade issueCouponService;
     @Autowired
     private CouponRepository couponRepository;
     @Autowired
@@ -83,6 +84,18 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
         assertThatThrownBy(() -> issueCouponService.issue(command))
                 .isInstanceOf(NotFoundCouponException.class)
                 .hasMessage("발급 요청된 쿠폰이 존재하지 않습니다.");
+    }
+
+    @DisplayName("재고가 없는 쿠폰은 발급할 수 없다.")
+    @Test
+    public void issueCouponForZeroLeftQuantityCoupon () {
+        //given
+        IssueUserCouponCommand command = new IssueUserCouponCommand(1L, 5L);
+
+        //when then
+        assertThatThrownBy(() -> issueCouponService.issue(command))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("쿠폰의 재고가 없습니다.");
     }
 
     @DisplayName("쿠폰을 발급하면, 쿠폰 재고가 감소한다.")
