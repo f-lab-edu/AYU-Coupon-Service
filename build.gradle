@@ -51,8 +51,8 @@ dependencies {
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-	// RestTemplate for PATCH method
-	implementation 'org.apache.httpcomponents.client5:httpclient5'
+	// Webclient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {

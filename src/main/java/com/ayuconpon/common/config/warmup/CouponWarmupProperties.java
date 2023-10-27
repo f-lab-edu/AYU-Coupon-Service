@@ -10,6 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CouponWarmupProperties {
 
     private final Integer warmupCount;
-    private final String couponUrl;
+    private final String baseUrl;
 
 }

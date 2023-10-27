@@ -10,10 +10,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class UserCouponWarmupProperties {
 
     private final Integer warmupCount;
-    private final Long dummyUserId;
-    private final Long dummyIssueCouponId;
-    private final String url;
-    private final String useUserCouponApiBody;
-    private final String issueUserCouponApiBody;
+    private final Long userid;
+    private final Long useApiPathSegment;
+    private final String baseUrl;
+    private final String useApiBody;
+    private final String issueApiBody;
 
 }
