@@ -5,7 +5,6 @@ import com.ayuconpon.usercoupon.domain.UserCouponRepository;
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.common.exception.DuplicatedCouponException;
 import com.ayuconpon.common.exception.NotFoundCouponException;
-import com.ayuconpon.common.exception.RequireRegistrationException;
 import org.junit.jupiter.api.AfterEach;
 
 import org.junit.jupiter.api.DisplayName;
@@ -60,18 +59,6 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
                  .isInstanceOf(DuplicatedCouponException.class)
                  .hasMessage("쿠폰이 이미 발급되었습니다.");
       }
-
-    @DisplayName("가입된 사용자만, 쿠폰 발급 요청할 수 있다.")
-    @Test
-    public void issueCouponOfNonRegisteredUser () {
-        //given
-        IssueUserCouponCommand command = new IssueUserCouponCommand(0L, 1L);
-
-        //when then
-        assertThatThrownBy(() -> issueCouponService.issue(command))
-                .isInstanceOf(RequireRegistrationException.class)
-                .hasMessage("회원 가입이 필요한 사용자입니다.");
-    }
 
     @DisplayName("발행된 쿠폰에 대해서만, 쿠폰 발급 요청할 수 있다.")
     @Test

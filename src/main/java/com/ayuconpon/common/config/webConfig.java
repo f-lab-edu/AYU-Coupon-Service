@@ -1,18 +1,21 @@
 package com.ayuconpon.common.config;
 
-import com.ayuconpon.common.resolver.UserIdArgumentResolver;
+import com.ayuconpon.common.interceptor.UserIdInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
-
 @Configuration
+@RequiredArgsConstructor
 public class webConfig implements WebMvcConfigurer {
 
+    private final UserIdInterceptor userIdInterceptor;
+
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new UserIdArgumentResolver());
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userIdInterceptor)
+                .addPathPatterns("/**/me/**");
     }
 
 }
