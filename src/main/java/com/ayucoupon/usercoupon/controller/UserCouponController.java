@@ -8,8 +8,8 @@ import com.ayucoupon.usercoupon.controller.response.ShowUserCouponsResponse;
 import com.ayucoupon.usercoupon.controller.response.UseUserCouponResponse;
 import com.ayucoupon.usercoupon.service.*;
 
-import com.ayucoupon.usercoupon.service.IssueUserCouponCommand;
-import com.ayucoupon.usercoupon.service.IssueUserCouponService;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

@@ -5,6 +5,8 @@ import com.ayucoupon.usercoupon.domain.UserCouponRepository;
 import com.ayucoupon.coupon.domain.entity.Coupon;
 import com.ayucoupon.common.exception.DuplicatedCouponException;
 import com.ayucoupon.common.exception.NotFoundCouponException;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponService;
 import org.junit.jupiter.api.AfterEach;
 
 import org.junit.jupiter.api.DisplayName;

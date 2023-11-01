@@ -3,6 +3,8 @@ package com.ayucoupon.usercoupon.service;
 import com.ayucoupon.common.Money;
 import com.ayucoupon.common.exception.AlreadyUsedUserCouponException;
 import com.ayucoupon.common.exception.NotFoundUserCouponException;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponCommand;
+import com.ayucoupon.usercoupon.service.issue.IssueUserCouponService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
