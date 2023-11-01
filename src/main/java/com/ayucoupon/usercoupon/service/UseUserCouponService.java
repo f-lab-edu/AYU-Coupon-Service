@@ -2,8 +2,6 @@ package com.ayucoupon.usercoupon.service;
 
 import com.ayucoupon.common.Money;
 import com.ayucoupon.common.exception.NotFoundUserCouponException;
-import com.ayucoupon.common.exception.RequireRegistrationException;
-import com.ayucoupon.user.domain.UserRepository;
 import com.ayucoupon.usercoupon.domain.UserCouponRepository;
 import com.ayucoupon.usercoupon.domain.entity.UserCoupon;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +15,9 @@ import java.time.LocalDateTime;
 public class UseUserCouponService {
 
     private final UserCouponRepository userCouponRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public Money use(UseUserCouponCommand command) {
-        validateRegisteredUser(command);
         return applyUserCoupon(command);
     }
 
@@ -31,11 +27,6 @@ public class UseUserCouponService {
 
         LocalDateTime currentTime = LocalDateTime.now();
         return userCoupon.use(command.productPrice(), currentTime);
-    }
-
-    private void validateRegisteredUser(UseUserCouponCommand command) {
-        boolean isExist = userRepository.existsById(command.userId());
-        if (!isExist) throw new RequireRegistrationException();
     }
 
 }

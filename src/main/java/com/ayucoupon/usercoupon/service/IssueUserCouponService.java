@@ -32,7 +32,6 @@ public class IssueUserCouponService {
 
     private void validate(IssueUserCouponCommand command) {
         validateRegisteredCoupon(command);
-        validateRegisteredUser(command);
         validateDuplicatedCoupon(command);
     }
 
@@ -52,11 +51,6 @@ public class IssueUserCouponService {
     private void validateRegisteredCoupon(IssueUserCouponCommand command) {
         boolean isExist = couponRepository.existsById(command.couponId());
         if (!isExist) throw new NotFoundCouponException();
-    }
-
-    private void validateRegisteredUser(IssueUserCouponCommand command) {
-        boolean isExist = userRepository.existsById(command.userId());
-        if (!isExist) throw new RequireRegistrationException();
     }
 
     private void validateDuplicatedCoupon(IssueUserCouponCommand command) {
