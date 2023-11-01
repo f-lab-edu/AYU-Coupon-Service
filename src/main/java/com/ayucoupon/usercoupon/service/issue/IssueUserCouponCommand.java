@@ -1,4 +1,4 @@
-package com.ayucoupon.usercoupon.service;
+package com.ayucoupon.usercoupon.service.issue;
 
 import org.springframework.util.Assert;
 
