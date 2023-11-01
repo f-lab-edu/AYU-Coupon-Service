@@ -3,12 +3,16 @@ package com.ayuconpon.usercoupon.controller;
 import com.ayuconpon.common.Money;
 import com.ayuconpon.coupon.domain.entity.Coupon;
 import com.ayuconpon.coupon.domain.value.Quantity;
+import com.ayuconpon.user.domain.UserRepository;
 import com.ayuconpon.usercoupon.controller.request.UseUserCouponRequest;
 import com.ayuconpon.usercoupon.controller.request.IssueUserCouponRequest;
 import com.ayuconpon.usercoupon.domain.entity.UserCoupon;
 import com.ayuconpon.usercoupon.service.*;
+import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.IssueUserCouponService;
 import com.ayuconpon.util.Coupons;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +48,18 @@ class CouponControllerTest {
     private UseUserCouponService useUserCouponService;
     @MockBean
     private ShowUserCouponService showUserCouponService;
+    @MockBean
+    private UserRepository userRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @BeforeEach
+    public void beforeEach() {
+        given(userRepository.existsById(any())).willReturn(true);
+    }
 
     @DisplayName("쿠폰 발급을 요청한다.")
     @Test

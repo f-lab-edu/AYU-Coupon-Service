@@ -3,7 +3,6 @@ package com.ayuconpon.usercoupon.service;
 import com.ayuconpon.common.Money;
 import com.ayuconpon.common.exception.AlreadyUsedUserCouponException;
 import com.ayuconpon.common.exception.NotFoundUserCouponException;
-import com.ayuconpon.common.exception.RequireRegistrationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +36,6 @@ class UseUserCouponServiceTest extends IssueCouponRepositorySupport {
         //then
         assertThat(discountedProductPrice.getValue()).isEqualTo(9000L);
     }
-
-    @DisplayName("가입된 사용자만, 쿠폰 적용 요청할 수 있다.")
-    @Test
-    public void applyUserCouponOfNonRegisteredUser() {
-        //given
-        Long invalidUserId = 0L;
-        Long userCouponId = 1L;
-        Money productPrice = Money.wons(10000L);
-        UseUserCouponCommand command = new UseUserCouponCommand(invalidUserId, userCouponId, productPrice);
-
-        //when then
-        assertThatThrownBy(() -> useUserCouponService.use(command))
-                .isInstanceOf(RequireRegistrationException.class)
-                .hasMessage("회원 가입이 필요한 사용자입니다.");
-    }
-
     @DisplayName("발급 받은 쿠폰만 사용할 수 있다.")
     @Test
     public void applyUnissuedUserCoupon() {

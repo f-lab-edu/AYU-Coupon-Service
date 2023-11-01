@@ -7,7 +7,9 @@ import com.ayuconpon.usercoupon.controller.response.IssueUserCouponResponse;
 import com.ayuconpon.usercoupon.controller.response.ShowUserCouponsResponse;
 import com.ayuconpon.usercoupon.controller.response.UseUserCouponResponse;
 import com.ayuconpon.usercoupon.service.*;
-import com.ayuconpon.common.resolver.UserId;
+
+import com.ayuconpon.usercoupon.service.IssueUserCouponCommand;
+import com.ayuconpon.usercoupon.service.IssueUserCouponService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +29,7 @@ public class UserCouponController {
     private final ShowUserCouponService showUserCouponService;
 
     @GetMapping("/v1/users/me/user-coupons")
-    public ResponseEntity<ShowUserCouponsResponse> showUserCoupons(@UserId Long userId, Pageable pageable) {
+    public ResponseEntity<ShowUserCouponsResponse> showUserCoupons(@RequestAttribute Long userId, Pageable pageable) {
 
         List<UserCouponDto> userCouponDtos = showUserCouponService.getUnexpiredUserCoupons(userId, LocalDateTime.now(), pageable);
         ShowUserCouponsResponse response = ShowUserCouponsResponse.from(userCouponDtos);
@@ -37,7 +39,7 @@ public class UserCouponController {
 
     @PostMapping("/v1/users/me/user-coupons")
     public ResponseEntity<IssueUserCouponResponse> issueCoupon(
-            @UserId Long userId,
+            @RequestAttribute Long userId,
             @Valid @RequestBody IssueUserCouponRequest issueUserCouponRequest) {
 
         IssueUserCouponCommand command = new IssueUserCouponCommand(userId, issueUserCouponRequest.getCouponId());
@@ -48,11 +50,11 @@ public class UserCouponController {
 
     @PatchMapping("/v1/users/me/user-coupons/{userCouponId}")
     public ResponseEntity<UseUserCouponResponse> useCoupon(
-            @UserId Long userid,
+            @RequestAttribute Long userId,
             @PathVariable Long userCouponId,
             @Valid @RequestBody UseUserCouponRequest useUserCouponRequest) {
 
-        UseUserCouponCommand command = new UseUserCouponCommand(userid,
+        UseUserCouponCommand command = new UseUserCouponCommand(userId,
                 userCouponId,
                 Money.wons(useUserCouponRequest.getProductPrice()));
         Money discountedProductPrice = useUserCouponService.use(command);

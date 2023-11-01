@@ -6,6 +6,7 @@ import com.ayuconpon.coupon.service.CouponDto;
 import com.ayuconpon.coupon.service.CouponMapper;
 import com.ayuconpon.coupon.service.CouponMapperImpl;
 import com.ayuconpon.coupon.service.ShowCouponsService;
+import com.ayuconpon.user.domain.UserRepository;
 import com.ayuconpon.util.Coupons;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,8 @@ class CouponControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private ShowCouponsService showCouponsService;
+    @MockBean
+    private UserRepository userRepository;
     @Autowired
     private CouponMapper couponMapper;
 
