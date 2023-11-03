@@ -30,7 +30,7 @@ public class IssueUserCouponModuleImpl implements IssueUserCouponModule {
         LocalDateTime currentTime = LocalDateTime.now();
 
         coupon.decrease(currentTime);
-        return new UserCoupon(command.userId(), coupon, currentTime);
+        return new UserCoupon(command.userId(), coupon.getCouponId(), coupon.getUsageHours(), currentTime);
     }
 
     private Long saveCoupon(UserCoupon issuedCoupon) {

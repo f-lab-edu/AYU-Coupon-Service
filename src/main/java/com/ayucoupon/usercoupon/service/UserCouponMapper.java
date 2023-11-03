@@ -1,6 +1,7 @@
 package com.ayucoupon.usercoupon.service;
 
 import com.ayucoupon.common.Money;
+import com.ayucoupon.coupon.domain.entity.Coupon;
 import com.ayucoupon.coupon.domain.value.DiscountPolicy;
 import com.ayucoupon.coupon.domain.value.DiscountType;
 import com.ayucoupon.usercoupon.domain.entity.UserCoupon;
@@ -20,9 +21,9 @@ public interface UserCouponMapper {
     @Mapping(source = "coupon.discountPolicy", target = "discountType", qualifiedByName = "discountType")
     @Mapping(source = "coupon.discountPolicy", target = "discountContent", qualifiedByName = "discountContent")
     @Mapping(source = "coupon.minProductPrice", target = "minProductPrice", qualifiedByName = "minProductPrice")
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "expiredAt", target = "expiredAt", qualifiedByName = "localDateTimeToString")
-    UserCouponDto toUserCouponDto(UserCoupon userCoupon);
+    @Mapping(source = "userCoupon.status", target = "status")
+    @Mapping(source = "userCoupon.expiredAt", target = "expiredAt", qualifiedByName = "localDateTimeToString")
+    UserCouponDto toUserCouponDto(UserCoupon userCoupon, Coupon coupon);
 
     @Named("localDateTimeToString")
     static String localDateTimeToString(LocalDateTime localDateTime) {
