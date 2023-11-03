@@ -8,6 +8,7 @@ import com.ayucoupon.coupon.domain.value.DiscountPolicy;
 import com.ayucoupon.coupon.domain.value.DiscountType;
 import com.ayucoupon.coupon.domain.value.IssuePeriod;
 import com.ayucoupon.coupon.domain.value.Quantity;
+import com.ayucoupon.usercoupon.domain.value.Status;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +28,10 @@ class UserCouponTest {
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
         // when
-        Money discountedProductPrice = userCoupon.use(productPrice, currentTime);
+        userCoupon.use(currentTime);
 
         // then
-        assertThat(discountedProductPrice.getValue()).isEqualTo(Money.wons(9000L).getValue());
+        assertThat(userCoupon.getStatus()).isEqualTo(Status.USED);
     }
 
     @DisplayName("사용된 쿠폰은 사용할 수 없다.")
@@ -38,13 +39,12 @@ class UserCouponTest {
     public void applyAlreadyUsedUserCoupon () {
         //given
         UserCoupon userCoupon = getDefaultUserCoupon();
-        Money productPrice = Money.wons(10000L);
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
 
-        userCoupon.use(productPrice, currentTime);
+        userCoupon.use(currentTime);
 
         // when //then
-        assertThatThrownBy(() -> userCoupon.use(productPrice, currentTime))
+        assertThatThrownBy(() -> userCoupon.use(currentTime))
                 .isInstanceOf(AlreadyUsedUserCouponException.class)
                 .hasMessage("이미 사용한 쿠폰입니다.");
      }
@@ -54,11 +54,10 @@ class UserCouponTest {
     public void applyExpiredUserCoupon () {
         //given
         UserCoupon userCoupon = getDefaultUserCoupon();
-        Money productPrice = Money.wons(10000L);
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 26, 12, 0, 1);
 
         // when //then
-        assertThatThrownBy(() -> userCoupon.use(productPrice, currentTime))
+        assertThatThrownBy(() -> userCoupon.use(currentTime))
                 .isInstanceOf(ExpiredUserCouponException.class)
                 .hasMessage("만료된 쿠폰입니다.");
     }
@@ -66,9 +65,10 @@ class UserCouponTest {
 
     private UserCoupon getDefaultUserCoupon() {
         Long userId = 1L;
-        Coupon coupon = getDefaultFixDiscountCoupon();
+        Long couponId = 1L;
+        Long usageHours = 72L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 23, 12, 0, 0);
-        return new UserCoupon(userId, coupon, currentTime);
+        return new UserCoupon(userId, couponId, usageHours, currentTime);
 
     }
 

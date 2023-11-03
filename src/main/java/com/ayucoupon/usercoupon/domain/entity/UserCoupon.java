@@ -34,9 +34,8 @@ public class UserCoupon extends BaseEntity {
 
     @Column(name = "user_id")
     private Long userId;
-    @ManyToOne
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    @Column(name = "coupon_id")
+    private Long couponId;
     @Column(name = "issued_at")
     private LocalDateTime issuedAt;
     @Column(name = "expired_at")
@@ -46,20 +45,19 @@ public class UserCoupon extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public UserCoupon(Long userId, Coupon coupon, LocalDateTime currentTime) {
+    public UserCoupon(Long userId, Long couponId, Long usageHours, LocalDateTime currentTime) {
         this.userId = userId;
-        this.coupon = coupon;
+        this.couponId = couponId;
         this.issuedAt = currentTime;
-        this.expiredAt = currentTime.plusHours(coupon.getUsageHours());
+        this.expiredAt = currentTime.plusHours(usageHours);
         this.usedAt = null;
         this.status = Status.UNUSED;
     }
 
-    public Money use(Money productPrice, LocalDateTime currentTime) {
+    public void use(LocalDateTime currentTime) {
         validate(currentTime);
         status = Status.USED;
         usedAt = currentTime;
-        return coupon.apply(productPrice);
     }
 
     private void validate(LocalDateTime currentTime) {

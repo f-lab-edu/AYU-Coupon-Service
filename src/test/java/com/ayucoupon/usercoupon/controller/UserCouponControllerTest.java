@@ -272,15 +272,18 @@ class UserCouponControllerTest {
 
     private List<UserCouponDto> getDefaultUserCouopnDtos() {
         Long userId = 1L;
+        Long fixCouponId = 1L;
+        Long rateCouponId = 2L;
+        Long usageHours = 72L;
         LocalDateTime currentTime = LocalDateTime.of(2023, 9, 24, 0, 0, 0);
         Coupon fixDiscountCoupon = Coupons.getDefaultFixDiscountCouponWithQuantity(Quantity.of(0L));
         Coupon rateDiscountCoupon = Coupons.getDefaultRateDiscountCoupon();
-        UserCoupon fixUserCoupon = new UserCoupon(userId, fixDiscountCoupon, currentTime);
-        UserCoupon rateUserCoupon = new UserCoupon(userId, rateDiscountCoupon, currentTime);
+        UserCoupon fixUserCoupon = new UserCoupon(userId, fixCouponId, usageHours, currentTime);
+        UserCoupon rateUserCoupon = new UserCoupon(userId, rateCouponId, usageHours, currentTime);
 
         return new ArrayList<>(
-                List.of(userCouponMapper.toUserCouponDto(fixUserCoupon),
-                        userCouponMapper.toUserCouponDto(rateUserCoupon))
+                List.of(userCouponMapper.toUserCouponDto(fixUserCoupon, fixDiscountCoupon),
+                        userCouponMapper.toUserCouponDto(rateUserCoupon, rateDiscountCoupon))
         );
 
     }

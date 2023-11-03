@@ -33,7 +33,7 @@ public class IssueValidator {
         Optional<UserCoupon> userCoupon = userCouponRepository
                 .findByUserId(command.userId())
                 .stream()
-                .filter(coupon -> coupon.getCoupon().getCouponId().equals(command.couponId()))
+                .filter(coupon -> coupon.getCouponId().equals(command.couponId()))
                 .findAny();
 
         if (userCoupon.isPresent()) throw new DuplicatedCouponException();

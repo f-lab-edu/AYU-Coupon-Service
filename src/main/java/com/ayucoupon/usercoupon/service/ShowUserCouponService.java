@@ -1,6 +1,9 @@
 package com.ayucoupon.usercoupon.service;
 
+import com.ayucoupon.coupon.domain.CouponRepository;
+import com.ayucoupon.coupon.domain.entity.Coupon;
 import com.ayucoupon.usercoupon.domain.UserCouponRepository;
+import com.ayucoupon.usercoupon.domain.entity.UserCoupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,13 +11,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ShowUserCouponService {
 
     private final UserCouponRepository userCouponRepository;
+    private final CouponRepository couponRepository;
     private final UserCouponMapper userCouponMapper;
 
     private static final String USER_COUPON_ID = "userCouponId";
@@ -25,9 +32,19 @@ public class ShowUserCouponService {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, USER_COUPON_ID));
 
-        return userCouponRepository.getUnexpiredUserCoupons(userId, currentTime, pageRequest)
+        Map<Long, UserCoupon> userCouponMap = userCouponRepository.getUnexpiredUserCoupons(userId, currentTime, pageRequest)
                 .stream()
-                .map(userCouponMapper::toUserCouponDto)
+                .collect(Collectors.toMap(
+                        UserCoupon::getCouponId,
+                        userCoupon -> userCoupon
+                ));
+
+        return couponRepository.findAllById(userCouponMap.keySet())
+                .stream()
+                .map(coupon -> {
+                    UserCoupon userCoupon = userCouponMap.get(coupon.getCouponId());
+                    return userCouponMapper.toUserCouponDto(userCoupon, coupon);
+                })
                 .toList();
     }
 
