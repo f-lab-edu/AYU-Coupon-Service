@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `user_coupon` (
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`user_coupon_id`),
-    INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
+    INDEX `user_id_idx` (`user_id` ASC) VISIBLE)
     ENGINE = InnoDB;
 
 ALTER TABLE user_coupon
