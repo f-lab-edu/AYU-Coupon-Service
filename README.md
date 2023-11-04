@@ -41,13 +41,14 @@
 - 부하 테스트 : nGrinder 
 - 성능 테스트 : pinpoint
 
-## 트러블 슈팅
+## Technical Issue
 
 - [동시성 이슈 : 데드락 발생 원인](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-%EB%8D%B0%EB%93%9C%EB%9D%BD-%EB%B0%9C%EC%83%9D-%EC%9B%90%EC%9D%B8/)
 - [동시성 이슈 : 이슈 해결을 위한 lock 선택](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%8F%99%EC%8B%9C%EC%84%B1-%ED%95%B4%EA%B2%B0%EC%9D%84-%EC%9C%84%ED%95%9C-lock-%EC%84%A0%ED%83%9D/)
 - [초기 응답 지연 이슈 : warm up](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%B4%88%EA%B8%B0-%EC%9D%91%EB%8B%B5-%EC%A7%80%EC%97%B0-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0-warm-up/)
 - [응답 지연 이슈 : connection-pool-size, index (TPS : 61.2 -> 179.3)](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%91%EB%8B%B5-%EC%A7%80%EC%97%B0-%EC%9D%B4%EC%8A%88-%EC%9D%B8%EB%8D%B1%EC%8A%A4/)
 - [Lock으로 인한 응답 지연 이슈 : Lock 경합 최소화 (TPS : 180.7 -> 220.3)](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-Lock%EC%9C%BC%EB%A1%9C-%EC%9D%B8%ED%95%9C-%EC%9D%91%EB%8B%B5-%EC%A7%80%EC%97%B0-%EC%9D%B4%EC%8A%88-%EB%A1%9C%EC%A7%81-%EA%B0%9C%EC%84%A0/)
+- [데이터소스 라우팅 이슈 : 어노테이션 기반 데이터소스 라우팅 어노테이션](https://cire0304.github.io/ayu-coupon/title-%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%86%8C%EC%8A%A4-%EB%9D%BC%EC%9A%B0%ED%8C%85-%EC%9D%B4%EC%8A%88-AOP%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%86%8C%EC%8A%A4-%EB%9D%BC%EC%9A%B0%ED%8C%85-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98/)
 
 ## 📑WIKI
 
