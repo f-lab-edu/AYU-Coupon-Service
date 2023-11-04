@@ -20,21 +20,22 @@ public class IssueUserCouponModuleImpl implements IssueUserCouponModule {
     @Override
     @Transactional
     public Long issue(IssueUserCouponCommand command) {
-        UserCoupon issuedUserCoupon = issueUserCoupon(command);
-        return saveCoupon(issuedUserCoupon);
-    }
-
-    private UserCoupon issueUserCoupon(IssueUserCouponCommand command) {
-        Coupon coupon = couponRepository.findByIdWithPessimisticLock(command.couponId());
-
         LocalDateTime currentTime = LocalDateTime.now();
-
-        coupon.decrease(currentTime);
-        return new UserCoupon(command.userId(), coupon.getCouponId(), coupon.getUsageHours(), currentTime);
+        Long userCouponId = issueUserCoupon(command, currentTime);
+        decreaseCouponQuantity(command, currentTime);
+        return userCouponId;
     }
 
-    private Long saveCoupon(UserCoupon issuedCoupon) {
-        return userCouponRepository.save(issuedCoupon).getUserCouponId();
+    private Long issueUserCoupon(IssueUserCouponCommand command, LocalDateTime currentTime) {
+        Long couponUsageHours = couponRepository.findCouponUsageHours(command.couponId());
+        UserCoupon issuedCoupon = new UserCoupon(command.userId(), command.couponId(), couponUsageHours, currentTime);
+        return userCouponRepository.save(issuedCoupon)
+                .getUserCouponId();
+    }
+
+    private void decreaseCouponQuantity(IssueUserCouponCommand command, LocalDateTime currentTime) {
+        Coupon coupon = couponRepository.findByIdWithPessimisticLock(command.couponId());
+        coupon.decrease(currentTime);
     }
 
 }
