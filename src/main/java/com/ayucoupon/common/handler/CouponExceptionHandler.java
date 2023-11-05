@@ -7,6 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.ConcurrentModificationException;
+
 @RestControllerAdvice(basePackages = "com.ayucoupon")
 public class CouponExceptionHandler {
 
@@ -27,7 +29,13 @@ public class CouponExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
-    
+
+    @ExceptionHandler(ConcurrentModificationException.class)
+    public ResponseEntity<String> handle(ConcurrentModificationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
     @ExceptionHandler(BaseCustomException.class)
     public ResponseEntity<String> handle(BaseCustomException e) {
         return ResponseEntity.status(e.getStatus())
