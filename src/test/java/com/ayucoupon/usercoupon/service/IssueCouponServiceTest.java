@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -28,7 +29,7 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
     private CouponRepository couponRepository;
     @Autowired
     private UserCouponRepository userCouponRepository;
-    
+
     @AfterEach
     public void afterEach() {
         userCouponRepository.deleteAllInBatch();
@@ -36,7 +37,7 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
 
     @DisplayName("쿠폰 요청을 할 수 있다.")
     @Test
-    public void  issueCoupon() {
+    public void issueCoupon() {
         //given
         IssueUserCouponCommand command = new IssueUserCouponCommand(1L, 1L);
 
@@ -45,24 +46,24 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
 
         //then
         assertThat(issuedCouponId).isNotNull();
-     }
+    }
 
-     @DisplayName("동일한 쿠폰은 중복 발급할 수 없다.")
-     @Test
-     public void duplicateIssueCoupon () {
-         //given
-         IssueUserCouponCommand command = new IssueUserCouponCommand(1L, 1L);
-         issueCouponService.issue(command);
+    @DisplayName("동일한 쿠폰은 중복 발급할 수 없다.")
+    @Test
+    public void duplicateIssueCoupon() {
+        //given
+        IssueUserCouponCommand command = new IssueUserCouponCommand(1L, 1L);
+        issueCouponService.issue(command);
 
-         //when then
-         assertThatThrownBy(() -> issueCouponService.issue(command))
-                 .isInstanceOf(DuplicatedCouponException.class)
-                 .hasMessage("쿠폰이 이미 발급되었습니다.");
-      }
+        //when then
+        assertThatThrownBy(() -> issueCouponService.issue(command))
+                .isInstanceOf(DuplicatedCouponException.class)
+                .hasMessage("쿠폰이 이미 발급되었습니다.");
+    }
 
     @DisplayName("발행된 쿠폰에 대해서만, 쿠폰 발급 요청할 수 있다.")
     @Test
-    public void issueCouponForInvalidCoupon () {
+    public void issueCouponForInvalidCoupon() {
         //given
         IssueUserCouponCommand command = new IssueUserCouponCommand(1L, 0L);
 
@@ -74,7 +75,7 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
 
     @DisplayName("쿠폰을 발급하면, 쿠폰 재고가 감소한다.")
     @Test
-    public void pessimisticLockIssueCouponTest () throws InterruptedException {
+    public void pessimisticLockIssueCouponTest() throws InterruptedException {
         //given
         Long couponId = 1L;
         Long userNum = 5L;

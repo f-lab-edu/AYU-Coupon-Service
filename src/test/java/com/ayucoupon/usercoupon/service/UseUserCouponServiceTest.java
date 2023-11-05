@@ -39,6 +39,7 @@ class UseUserCouponServiceTest extends IssueCouponRepositorySupport {
         //then
         assertThat(discountedProductPrice.getValue()).isEqualTo(9000L);
     }
+
     @DisplayName("발급 받은 쿠폰만 사용할 수 있다.")
     @Test
     public void applyUnissuedUserCoupon() {
