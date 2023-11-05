@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,16 +75,13 @@ class UseUserCouponServiceTest extends IssueCouponRepositorySupport {
         //when
         UseUserCouponCommand command = new UseUserCouponCommand(userId, userCouponId, money);
         for (int i = 0; i < numberOfRequest; i++) {
-            service.execute(() -> {
-                try {
-                    useUserCouponService.use(command);
-                    successCount++;
-                } catch (AlreadyUsedUserCouponException e) {
-                    failCount++;
-                } finally {
-                    latch.countDown();
-                }
-            });
+            CompletableFuture
+                    .runAsync(() -> useUserCouponService.use(command), service)
+                    .whenComplete((result, error) -> {
+                        if (error == null) successCount++;
+                        else failCount++;
+                        latch.countDown();
+                    });
         }
         latch.await();
 

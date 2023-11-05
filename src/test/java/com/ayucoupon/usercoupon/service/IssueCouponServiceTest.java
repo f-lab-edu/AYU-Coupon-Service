@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -89,10 +87,9 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
         //when
         for (int userId = 1; userId <= userNum; userId++) {
             IssueUserCouponCommand command = new IssueUserCouponCommand((long) userId, couponId);
-            service.execute(() -> {
-                issueCouponService.issue(command);
-                latch.countDown();
-            });
+            CompletableFuture
+                    .runAsync(() -> issueCouponService.issue(command), service)
+                    .whenComplete((result, error) -> latch.countDown());
         }
         latch.await();
 
