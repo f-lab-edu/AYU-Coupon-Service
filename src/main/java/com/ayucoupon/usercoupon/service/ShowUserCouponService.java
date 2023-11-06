@@ -1,5 +1,6 @@
 package com.ayucoupon.usercoupon.service;
 
+import com.ayucoupon.common.aop.multidatasource.DataSource;
 import com.ayucoupon.coupon.domain.CouponRepository;
 import com.ayucoupon.coupon.domain.entity.Coupon;
 import com.ayucoupon.usercoupon.domain.UserCouponRepository;
@@ -26,6 +27,7 @@ public class ShowUserCouponService {
 
     private static final String USER_COUPON_ID = "userCouponId";
 
+    @DataSource("primary")
     public List<UserCouponDto> getUnexpiredUserCoupons(Long userId, LocalDateTime currentTime, Pageable pageable) {
         Pageable pageRequest = PageRequest.of(
                 pageable.getPageNumber(),
