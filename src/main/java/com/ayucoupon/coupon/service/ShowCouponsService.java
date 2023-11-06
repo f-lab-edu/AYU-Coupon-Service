@@ -1,5 +1,6 @@
 package com.ayucoupon.coupon.service;
 
+import com.ayucoupon.common.aop.multidatasource.DataSource;
 import com.ayucoupon.coupon.domain.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ public class ShowCouponsService {
 
     private static final String COUPON_ID = "couponId";
 
+    @DataSource("secondary")
     public List<CouponDto> getCouponsInProgress(LocalDateTime currentTime, Pageable pageable) {
         Pageable pageRequest = PageRequest.of(
                 pageable.getPageNumber(),

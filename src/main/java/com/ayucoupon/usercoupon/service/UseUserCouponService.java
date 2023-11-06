@@ -1,6 +1,7 @@
 package com.ayucoupon.usercoupon.service;
 
 import com.ayucoupon.common.Money;
+import com.ayucoupon.common.aop.multidatasource.DataSource;
 import com.ayucoupon.common.exception.NotFoundUserCouponException;
 import com.ayucoupon.coupon.domain.CouponRepository;
 import com.ayucoupon.coupon.domain.entity.Coupon;
@@ -21,6 +22,7 @@ public class UseUserCouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
+    @DataSource("primary")
     public Money use(UseUserCouponCommand command) {
         return applyUserCoupon(command);
     }
