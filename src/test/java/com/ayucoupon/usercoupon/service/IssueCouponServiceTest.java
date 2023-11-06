@@ -73,6 +73,39 @@ class IssueCouponServiceTest extends IssueCouponRepositorySupport {
                 .hasMessage("발급 요청된 쿠폰이 존재하지 않습니다.");
     }
 
+    @DisplayName("동일한 사용자가 동시에 쿠폰 발급 요청을 보낼 수 없다.")
+    @Test
+    public void multiIssueCouponOfSameUser() throws InterruptedException {
+        //given
+        Long couponId = 1L;
+        Long userId = 1L;
+        long issueCount = 5L;
+        AtomicInteger duplicatedCouponExceptionCount = new AtomicInteger();
+
+        int couponLeftQuantity = (int) issueCount;
+        int numberOfThreads = (int) issueCount;
+
+        ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
+        CountDownLatch latch = new CountDownLatch(couponLeftQuantity);
+
+        //when
+        IssueUserCouponCommand command = new IssueUserCouponCommand(userId, couponId);
+        for (int i = 1; i <= issueCount; i++) {
+            CompletableFuture
+                    .runAsync(() -> issueCouponService.issue(command), service)
+                    .whenComplete((result, error) -> {
+                        if (error != null && error.getCause() instanceof DuplicatedCouponException)
+                            duplicatedCouponExceptionCount.incrementAndGet();
+                        latch.countDown();
+                    });
+        }
+        latch.await();
+
+        // then
+        assertThat(duplicatedCouponExceptionCount.get()).isEqualTo(issueCount - 1);
+    }
+
+
     @DisplayName("쿠폰을 발급하면, 쿠폰 재고가 감소한다.")
     @Test
     public void pessimisticLockIssueCouponTest() throws InterruptedException {
